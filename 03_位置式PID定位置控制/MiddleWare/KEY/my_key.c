@@ -196,9 +196,9 @@ uint8_t my_get_key_num(void)
     {
         if (Key_Check(i, KEY_DOWN))
         {
-            OLED_Clear();  // 可选：清除屏幕，避免多行堆叠
-            OLED_Printf(0, 16, OLED_6X8, "KEY[%d] DOWN", i);
-            OLED_Update();
+//            OLED_Clear();  // 可选：清除屏幕，避免多行堆叠
+//            OLED_Printf(0, 16, OLED_6X8, "KEY[%d] DOWN", i);
+//            OLED_Update();
             break; // 找到一个按下的键就退出
         }
     }

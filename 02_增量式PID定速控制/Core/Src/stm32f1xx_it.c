@@ -246,29 +246,40 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* tim_baseHandle)
 		{
 			query_encoder_speed_count = 0;
 			
+			#if 1
 			
 			Motor_PID.PID_Actual = Encoder_Get();									//获取当前实际的速度（代表40ms检测到的脉宽数）
 			
+			
+			/*获取本次误差、上次误差和上上次误差*/
 			Motor_PID.PID_Error2 = Motor_PID.PID_Error1;							//获取上上次误差
 			Motor_PID.PID_Error1 = Motor_PID.PID_Error0;							//获取上次误差
-			Motor_PID.PID_Error0 = Motor_PID.PID_Target - Motor_PID.PID_Actual;		//获取本次误差，目标值减实际值，即为误差值
+			Motor_PID.PID_Error0 = Motor_PID.PID_Target - Motor_PID.PID_Actual;		//获取本次误差，目标值减实际值，即为误差值			
 			
 			/*PID计算*/
+			/*使用位置式PID公式，计算得到输出值*/
+			Motor_PID.PWM_Out += Motor_PID.PID_Kp * Motor_PID.PID_Error0 + \
+								Motor_PID.PID_Ki * Motor_PID.PID_ErrorInt + \
+								Motor_PID.PID_Kd * (Motor_PID.PID_Error0 - Motor_PID.PID_Error1);
+			
+			
+						/*PID计算*/
 			/*使用增量式PID公式，计算得到输出值*/
-			Motor_PID.PWM_Out += Motor_PID.PID_Kp * (Motor_PID.PID_Error0 - Motor_PID.PID_Error1) + \
+			Motor_PID.PWM_Out += Motor_PID.PID_Kp  * (Motor_PID.PID_Error0 - Motor_PID.PID_Error1) + \
 								 Motor_PID.PID_Ki * Motor_PID.PID_Error0 + \
 								 Motor_PID.PID_Kd * (Motor_PID.PID_Error0 - 2 * Motor_PID.PID_Error1 + Motor_PID.PID_Error2);
-			
+					
 			/*输出限幅 根据PWM最大输出参数来决定·*/
-			if (Motor_PID.PWM_Out > 200) {Motor_PID.PWM_Out = 200;}		//限制输出值最大为100
-			if (Motor_PID.PWM_Out < -200) {Motor_PID.PWM_Out = -200;}	//限制输出值最小为100
+			if (Motor_PID.PWM_Out > 100) {Motor_PID.PWM_Out = 100;}		//限制输出值最大为100
+			if (Motor_PID.PWM_Out < -100) {Motor_PID.PWM_Out = -100;}	//限制输出值最小为100
 			
 			/*执行控制*/
 			/*输出值给到电机PWM*/
 			/*因为此函数的输入范围是-100~100，所以上面输出限幅，需要给Out值限定在-100~100*/
 			Motor_SetPWM(Motor_PID.PWM_Out);
 			
-			#if 0
+
+			#else
 			encoder_value = Encoder_Get();
 			//一圈是11个脉冲  4倍频  就是44个脉冲   减速比是9.3左右,因此一圈是  408个脉冲，这个是40ms检测到的脉冲，因此还要除以0.04
 			speed = encoder_value/408.0/0.04;
@@ -282,9 +293,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* tim_baseHandle)
 			/*则可将此句代码改成Actual = Encoder_Get() / 408.0 / 0.04;*/
 			printf("Encoder: %d\r\n", encoder_value);
 			printf("speed: %.2f\r\n", speed);
-			OLED_Printf(0, 16, OLED_8X16, "Encoder: %d",encoder_value);
-			OLED_Printf(0, 32, OLED_8X16, "speed: %.2f",speed);
-			OLED_Update();
+//			OLED_Printf(0, 16, OLED_8X16, "Encoder: %d",encoder_value);
+//			OLED_Printf(0, 32, OLED_8X16, "speed: %.2f",speed);
+//			OLED_Update();
 			#endif
 		}
 //		printf("htim1 CALLBACK!\r\n");

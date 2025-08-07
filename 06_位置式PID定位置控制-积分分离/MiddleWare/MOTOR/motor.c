@@ -7,7 +7,7 @@
   * 参    数：PWM 要设置的PWM值，范围：-100~100（负数为反转）
   * 返 回 值：无
   */
-void Motor_SetPWM(int8_t PWM)
+void Motor_SetPWM(int16_t PWM)
 {
 	if (PWM >= 0)							//如果设置正转的PWM
 	{
@@ -30,5 +30,5 @@ int16_t Encoder_Get(void)
 	int16_t temp;
 	temp = (int16_t)__HAL_TIM_GET_COUNTER(&htim3);  // 读取编码器值
 	__HAL_TIM_SET_COUNTER(&htim3, 0);
-	return temp;
+	return -temp;
 }

@@ -209,20 +209,26 @@ int main(void)
 		switch(KeyNum)
 		{
 			case 0:									//如果K1按下
+				printf("key1 pressed!r\n");
 				Motor_PID.PID_Target +=	10;			//目标值加10
 				break;
 			case 1:									//如果K2按下
+				printf("key2 pressed!r\n");
 				Motor_PID.PID_Target -=	10;			//目标值加10
 				break;
-			case 2:									//如果K3按下
-				break;
-			case 3:
+			case 2:	
+				printf("key3 pressed!r\n");				//如果K3按下
 				Motor_PID.PID_Target = 0;			//目标值归0
+				break;
+			case 3: 
+				printf("key4 pressed!r\n");
 				break;
 			default:
 				break;
 		}
+		
 		#endif 
+		#if 1
 		Read_All_ADC_Channels();							//电位器读取值
 		/*
 			OLED显示
@@ -239,7 +245,7 @@ int main(void)
 			.0	小数点后保留 0 位，即只显示整数
 			f	显示为浮点数
 		*/
-		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kd);			//显示Kp
+		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kp);			//显示Kp
 		OLED_Printf(0, 32, OLED_8X16, "Ki:%4.2f", Motor_PID.PID_Ki);			//显示Ki
 		OLED_Printf(0, 48, OLED_8X16, "Kd:%4.2f", Motor_PID.PID_Kd);			//显示Kd
 		
@@ -249,14 +255,12 @@ int main(void)
 		
 		OLED_Update();	//OLED更新，调用显示函数后必须调用此函数更新，否则显示的内容不会更新到OLED上
 		
-
 		/*
 			//串口打印目标值、实际值和输出值
 			//配合SerialPlot绘图软件，可以显示数据的波形
 		*/
 		printf("%f,%f,%f\r\n", Motor_PID.PID_Target, Motor_PID.PID_Actual, Motor_PID.PWM_Out);		//串口打印目标值、实际值和输出值
-																								
-																
+		#endif 										
 																
 //		my_key_test_func();								//按键OLED显示
     /* USER CODE END WHILE */

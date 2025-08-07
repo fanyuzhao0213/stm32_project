@@ -51,7 +51,6 @@ typedef struct {
 
 // 创建PID控制器实例
 extern PID_Controller Motor_PID;
-
 extern uint8_t MotorErrorFlag;		//电机标志位，此标志位置0，模拟电机因故障而停止
 /* USER CODE END ET */
 

@@ -38,5 +38,4 @@ pid_project\stm32f1xx_it.o: ..\MiddleWare\MOTOR\motor.h
 pid_project\stm32f1xx_it.o: ../Core/Inc/tim.h
 pid_project\stm32f1xx_it.o: ..\MiddleWare\OLED\OLED.h
 pid_project\stm32f1xx_it.o: ..\MiddleWare\OLED\OLED_Data.h
-pid_project\stm32f1xx_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 pid_project\stm32f1xx_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

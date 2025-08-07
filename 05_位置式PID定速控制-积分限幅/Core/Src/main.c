@@ -46,7 +46,9 @@
 // 创建PID控制器实例
 PID_Controller Motor_PID;
 
+
 uint8_t MotorErrorFlag = 1;		//电机标志位，此标志位置0，模拟电机因故障而停止
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -210,12 +212,34 @@ int main(void)
 		switch(KeyNum)
 		{
 			case 0:									//如果K1按下
-				MotorErrorFlag = !MotorErrorFlag;	//电机标志位取非，模拟电机故障和恢复正常
+				printf("key1 pressed!r\n");
+				MotorErrorFlag = !MotorErrorFlag;
+				if(MotorErrorFlag == 1)
+				{
+					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+				}
+				else
+				{
+					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+				}
+				break;
+			case 1:									//如果K2按下
+				printf("key2 pressed!r\n");
+				Motor_PID.PID_Target -=	10;			//目标值加10
+				break;
+			case 2:	
+				printf("key3 pressed!r\n");				//如果K3按下
+				Motor_PID.PID_Target = 0;			//目标值归0
+				break;
+			case 3: 
+				printf("key4 pressed!r\n");
 				break;
 			default:
 				break;
 		}
+		
 		#endif 
+		#if 1
 		Read_All_ADC_Channels();							//电位器读取值
 		/*
 			OLED显示
@@ -232,7 +256,7 @@ int main(void)
 			.0	小数点后保留 0 位，即只显示整数
 			f	显示为浮点数
 		*/
-		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kd);			//显示Kp
+		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kp);			//显示Kp
 		OLED_Printf(0, 32, OLED_8X16, "Ki:%4.2f", Motor_PID.PID_Ki);			//显示Ki
 		OLED_Printf(0, 48, OLED_8X16, "Kd:%4.2f", Motor_PID.PID_Kd);			//显示Kd
 		
@@ -246,9 +270,9 @@ int main(void)
 			//串口打印目标值、实际值和输出值
 			//配合SerialPlot绘图软件，可以显示数据的波形
 		*/
-		printf("%f,%f,%f,%f\r\n", Motor_PID.PID_Target, Motor_PID.PID_Actual, Motor_PID.PWM_Out,Motor_PID.PID_ErrorInt);		//串口打印目标值、实际值和输出值和误差积分																						
-																								
-																						
+		printf("%f,%f,%f,%f\r\n", Motor_PID.PID_Target, Motor_PID.PID_Actual, Motor_PID.PWM_Out, Motor_PID.PID_ErrorInt);		//串口打印目标值、实际值和输出值
+		#endif 										
+																
 //		my_key_test_func();								//按键OLED显示
     /* USER CODE END WHILE */
 

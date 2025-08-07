@@ -44,8 +44,9 @@ void MX_ADC1_Init(void)
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.DiscontinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 4;
@@ -158,26 +159,25 @@ void Read_ADC1_MultiChannel_Average(uint16_t *avg_buffer)
 
     for (int sample = 0; sample < sample_count; sample++)
     {
-        HAL_ADC_Start(&hadc1);
-
-        // 依次读取 4 个通道（顺序与 Rank 对应）
         for (int i = 0; i < 4; i++)
         {
+			HAL_ADC_Start(&hadc1);
+            // 等待一个通道转换完成
             if (HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) == HAL_OK)
             {
-                sum[i] += HAL_ADC_GetValue(&hadc1);
+                sum[i] += HAL_ADC_GetValue(&hadc1); // 顺序读取当前 Rank 的值
             }
         }
 
         HAL_ADC_Stop(&hadc1);
     }
 
-    // 平均
     for (int i = 0; i < 4; i++)
     {
-        avg_buffer[i] = (uint16_t)(sum[i] / sample_count);
+        avg_buffer[i] = sum[i] / sample_count;
     }
 }
+
 
 void Read_All_ADC_Channels(void)
 {
@@ -188,10 +188,12 @@ void Read_All_ADC_Channels(void)
 	Motor_PID.PID_Kp = adc_values[0] / 4095.0 * 2;						//修改Kp，调整范围：0~2
 	Motor_PID.PID_Ki = adc_values[1] / 4095.0 * 2;						//修改KI，调整范围：0~2
 	Motor_PID.PID_Kd = adc_values[2] / 4095.0 * 2;						//修改KD，调整范围：0~2
-	Motor_PID.PID_Target = adc_values[3] / 4095.0 * 816 - 408;			//修改目标值，调整范围：-408~408 设置408对于这个电机来说刚好转一圈
+	Motor_PID.PID_Target = adc_values[3] / 4095.0 * 816 - 408;			//修改目标值，调整范围：-408~408    这个根据测试来看   一圈是408个脉冲左右
 	
 //    printf("CH1: %u, CH2: %u, CH3: %u, CH4: %u\r\n",
 //           adc_values[0], adc_values[1],
 //           adc_values[2], adc_values[3]);
 }
+
+
 /* USER CODE END 1 */

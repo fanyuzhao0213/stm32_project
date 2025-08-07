@@ -38,10 +38,10 @@ Section Cross References
     main.o(i.main) refers to oled.o(i.OLED_Printf) for OLED_Printf
     main.o(i.main) refers to oled.o(i.OLED_Update) for OLED_Update
     main.o(i.main) refers to my_key.o(i.my_get_key_num) for my_get_key_num
+    main.o(i.main) refers to printfa.o(i.__0printf) for __2printf
     main.o(i.main) refers to fadd.o(.text) for __aeabi_fadd
     main.o(i.main) refers to adc.o(i.Read_All_ADC_Channels) for Read_All_ADC_Channels
     main.o(i.main) refers to f2d.o(.text) for __aeabi_f2d
-    main.o(i.main) refers to printfa.o(i.__0printf) for __2printf
     main.o(i.main) refers to tim.o(.bss) for htim1
     main.o(i.main) refers to main.o(.bss) for .bss
     main.o(i.motor_pwm_encoder_start) refers to stm32f1xx_hal_tim.o(i.HAL_TIM_PWM_Start) for HAL_TIM_PWM_Start
@@ -146,9 +146,6 @@ Section Cross References
     my_key.o(i.Key_Tick) refers to my_key.o(i.Key_GetState) for Key_GetState
     my_key.o(i.Key_Tick) refers to my_key.o(.data) for .data
     my_key.o(i.my_get_key_num) refers to my_key.o(i.Key_Check) for Key_Check
-    my_key.o(i.my_get_key_num) refers to oled.o(i.OLED_Clear) for OLED_Clear
-    my_key.o(i.my_get_key_num) refers to oled.o(i.OLED_Printf) for OLED_Printf
-    my_key.o(i.my_get_key_num) refers to oled.o(i.OLED_Update) for OLED_Update
     my_key.o(i.my_key_test_func) refers to my_key.o(i.Key_Check) for Key_Check
     my_key.o(i.my_key_test_func) refers to oled.o(i.OLED_Printf) for OLED_Printf
     my_key.o(i.my_key_test_func) refers to oled.o(i.OLED_Update) for OLED_Update
@@ -1692,11 +1689,11 @@ Image Symbol Table
     i.Key_GetState                           0x08002224   Section        0  my_key.o(i.Key_GetState)
     i.Key_Tick                               0x08002260   Section        0  my_key.o(i.Key_Tick)
     i.MX_ADC1_Init                           0x08002394   Section        0  adc.o(i.MX_ADC1_Init)
-    i.MX_GPIO_Init                           0x08002420   Section        0  gpio.o(i.MX_GPIO_Init)
-    i.MX_TIM1_Init                           0x080024f0   Section        0  tim.o(i.MX_TIM1_Init)
-    i.MX_TIM2_Init                           0x08002558   Section        0  tim.o(i.MX_TIM2_Init)
-    i.MX_TIM3_Init                           0x080025fc   Section        0  tim.o(i.MX_TIM3_Init)
-    i.MX_TIM4_Init                           0x08002668   Section        0  tim.o(i.MX_TIM4_Init)
+    i.MX_GPIO_Init                           0x08002424   Section        0  gpio.o(i.MX_GPIO_Init)
+    i.MX_TIM1_Init                           0x080024f4   Section        0  tim.o(i.MX_TIM1_Init)
+    i.MX_TIM2_Init                           0x0800255c   Section        0  tim.o(i.MX_TIM2_Init)
+    i.MX_TIM3_Init                           0x08002600   Section        0  tim.o(i.MX_TIM3_Init)
+    i.MX_TIM4_Init                           0x0800266c   Section        0  tim.o(i.MX_TIM4_Init)
     i.MX_USART1_UART_Init                    0x080026d4   Section        0  usart.o(i.MX_USART1_UART_Init)
     i.MemManage_Handler                      0x0800270c   Section        0  stm32f1xx_it.o(i.MemManage_Handler)
     i.Motor_SetPWM                           0x08002710   Section        0  motor.o(i.Motor_SetPWM)
@@ -1769,19 +1766,19 @@ Image Symbol Table
     _sputc                                   0x08003a8f   Thumb Code    10  printfa.o(i._sputc)
     i.fputc                                  0x08003a98   Section        0  usart.o(i.fputc)
     i.main                                   0x08003ab0   Section        0  main.o(i.main)
-    i.motor_pwm_encoder_start                0x08003c50   Section        0  main.o(i.motor_pwm_encoder_start)
-    i.my_get_key_num                         0x08003c70   Section        0  my_key.o(i.my_get_key_num)
-    .constdata                               0x08003cb0   Section     1520  oled_data.o(.constdata)
-    .constdata                               0x080042a0   Section      570  oled_data.o(.constdata)
-    .constdata                               0x080044da   Section      245  oled_data.o(.constdata)
-    .constdata                               0x080045cf   Section       18  stm32f1xx_hal_rcc.o(.constdata)
-    aPredivFactorTable                       0x080045cf   Data           2  stm32f1xx_hal_rcc.o(.constdata)
-    aPLLMULFactorTable                       0x080045d1   Data          16  stm32f1xx_hal_rcc.o(.constdata)
-    .constdata                               0x080045e1   Section       18  stm32f1xx_hal_rcc_ex.o(.constdata)
-    aPredivFactorTable                       0x080045e1   Data           2  stm32f1xx_hal_rcc_ex.o(.constdata)
-    aPLLMULFactorTable                       0x080045e3   Data          16  stm32f1xx_hal_rcc_ex.o(.constdata)
-    .constdata                               0x080045f3   Section       16  system_stm32f1xx.o(.constdata)
-    .constdata                               0x08004603   Section        8  system_stm32f1xx.o(.constdata)
+    i.motor_pwm_encoder_start                0x08003ca8   Section        0  main.o(i.motor_pwm_encoder_start)
+    i.my_get_key_num                         0x08003cc8   Section        0  my_key.o(i.my_get_key_num)
+    .constdata                               0x08003ce0   Section     1520  oled_data.o(.constdata)
+    .constdata                               0x080042d0   Section      570  oled_data.o(.constdata)
+    .constdata                               0x0800450a   Section      245  oled_data.o(.constdata)
+    .constdata                               0x080045ff   Section       18  stm32f1xx_hal_rcc.o(.constdata)
+    aPredivFactorTable                       0x080045ff   Data           2  stm32f1xx_hal_rcc.o(.constdata)
+    aPLLMULFactorTable                       0x08004601   Data          16  stm32f1xx_hal_rcc.o(.constdata)
+    .constdata                               0x08004611   Section       18  stm32f1xx_hal_rcc_ex.o(.constdata)
+    aPredivFactorTable                       0x08004611   Data           2  stm32f1xx_hal_rcc_ex.o(.constdata)
+    aPLLMULFactorTable                       0x08004613   Data          16  stm32f1xx_hal_rcc_ex.o(.constdata)
+    .constdata                               0x08004623   Section       16  system_stm32f1xx.o(.constdata)
+    .constdata                               0x08004633   Section        8  system_stm32f1xx.o(.constdata)
     .data                                    0x20000000   Section        1  stm32f1xx_it.o(.data)
     query_encoder_speed_count                0x20000000   Data           1  stm32f1xx_it.o(.data)
     .data                                    0x20000002   Section       26  my_key.o(.data)
@@ -1954,7 +1951,7 @@ Image Symbol Table
     ADC_Enable                               0x0800096d   Thumb Code   114  stm32f1xx_hal_adc.o(i.ADC_Enable)
     BusFault_Handler                         0x080009e9   Thumb Code     2  stm32f1xx_it.o(i.BusFault_Handler)
     DebugMon_Handler                         0x080009eb   Thumb Code     2  stm32f1xx_it.o(i.DebugMon_Handler)
-    Encoder_Get                              0x080009ed   Thumb Code    14  motor.o(i.Encoder_Get)
+    Encoder_Get                              0x080009ed   Thumb Code    16  motor.o(i.Encoder_Get)
     Error_Handler                            0x08000a01   Thumb Code     4  main.o(i.Error_Handler)
     HAL_ADC_ConfigChannel                    0x08000a05   Thumb Code   240  stm32f1xx_hal_adc.o(i.HAL_ADC_ConfigChannel)
     HAL_ADC_GetValue                         0x08000b01   Thumb Code     6  stm32f1xx_hal_adc.o(i.HAL_ADC_GetValue)
@@ -2010,12 +2007,12 @@ Image Symbol Table
     Key_Check                                0x08002205   Thumb Code    26  my_key.o(i.Key_Check)
     Key_GetState                             0x08002225   Thumb Code    50  my_key.o(i.Key_GetState)
     Key_Tick                                 0x08002261   Thumb Code   302  my_key.o(i.Key_Tick)
-    MX_ADC1_Init                             0x08002395   Thumb Code   132  adc.o(i.MX_ADC1_Init)
-    MX_GPIO_Init                             0x08002421   Thumb Code   190  gpio.o(i.MX_GPIO_Init)
-    MX_TIM1_Init                             0x080024f1   Thumb Code    94  tim.o(i.MX_TIM1_Init)
-    MX_TIM2_Init                             0x08002559   Thumb Code   160  tim.o(i.MX_TIM2_Init)
-    MX_TIM3_Init                             0x080025fd   Thumb Code    98  tim.o(i.MX_TIM3_Init)
-    MX_TIM4_Init                             0x08002669   Thumb Code    98  tim.o(i.MX_TIM4_Init)
+    MX_ADC1_Init                             0x08002395   Thumb Code   134  adc.o(i.MX_ADC1_Init)
+    MX_GPIO_Init                             0x08002425   Thumb Code   190  gpio.o(i.MX_GPIO_Init)
+    MX_TIM1_Init                             0x080024f5   Thumb Code    94  tim.o(i.MX_TIM1_Init)
+    MX_TIM2_Init                             0x0800255d   Thumb Code   160  tim.o(i.MX_TIM2_Init)
+    MX_TIM3_Init                             0x08002601   Thumb Code    98  tim.o(i.MX_TIM3_Init)
+    MX_TIM4_Init                             0x0800266d   Thumb Code    96  tim.o(i.MX_TIM4_Init)
     MX_USART1_UART_Init                      0x080026d5   Thumb Code    48  usart.o(i.MX_USART1_UART_Init)
     MemManage_Handler                        0x0800270d   Thumb Code     2  stm32f1xx_it.o(i.MemManage_Handler)
     Motor_SetPWM                             0x08002711   Thumb Code    76  motor.o(i.Motor_SetPWM)
@@ -2065,16 +2062,16 @@ Image Symbol Table
     __scatterload_null                       0x080031f3   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x080031f5   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
     fputc                                    0x08003a99   Thumb Code    20  usart.o(i.fputc)
-    main                                     0x08003ab1   Thumb Code   302  main.o(i.main)
-    motor_pwm_encoder_start                  0x08003c51   Thumb Code    22  main.o(i.motor_pwm_encoder_start)
-    my_get_key_num                           0x08003c71   Thumb Code    48  my_key.o(i.my_get_key_num)
-    OLED_F8x16                               0x08003cb0   Data        1520  oled_data.o(.constdata)
-    OLED_F6x8                                0x080042a0   Data         570  oled_data.o(.constdata)
-    OLED_CF16x16                             0x080044da   Data         245  oled_data.o(.constdata)
-    AHBPrescTable                            0x080045f3   Data          16  system_stm32f1xx.o(.constdata)
-    APBPrescTable                            0x08004603   Data           8  system_stm32f1xx.o(.constdata)
-    Region$$Table$$Base                      0x0800460c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800462c   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x08003ab1   Thumb Code   328  main.o(i.main)
+    motor_pwm_encoder_start                  0x08003ca9   Thumb Code    22  main.o(i.motor_pwm_encoder_start)
+    my_get_key_num                           0x08003cc9   Thumb Code    24  my_key.o(i.my_get_key_num)
+    OLED_F8x16                               0x08003ce0   Data        1520  oled_data.o(.constdata)
+    OLED_F6x8                                0x080042d0   Data         570  oled_data.o(.constdata)
+    OLED_CF16x16                             0x0800450a   Data         245  oled_data.o(.constdata)
+    AHBPrescTable                            0x08004623   Data          16  system_stm32f1xx.o(.constdata)
+    APBPrescTable                            0x08004633   Data           8  system_stm32f1xx.o(.constdata)
+    Region$$Table$$Base                      0x0800463c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800465c   Number         0  anon$$obj.o(Region$$Table)
     Key_Flag                                 0x2000000f   Data           4  my_key.o(.data)
     uwTickFreq                               0x2000001c   Data           1  stm32f1xx_hal.o(.data)
     uwTickPrio                               0x20000020   Data           4  stm32f1xx_hal.o(.data)
@@ -2099,9 +2096,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0000465c, Max: 0x00010000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0000468c, Max: 0x00010000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000462c, Max: 0x00010000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000465c, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2208,12 +2205,12 @@ Memory Map of the image
     0x08002204   0x08002204   0x00000020   Code   RO          519    i.Key_Check         my_key.o
     0x08002224   0x08002224   0x0000003c   Code   RO          520    i.Key_GetState      my_key.o
     0x08002260   0x08002260   0x00000134   Code   RO          521    i.Key_Tick          my_key.o
-    0x08002394   0x08002394   0x0000008c   Code   RO          219    i.MX_ADC1_Init      adc.o
-    0x08002420   0x08002420   0x000000d0   Code   RO          189    i.MX_GPIO_Init      gpio.o
-    0x080024f0   0x080024f0   0x00000068   Code   RO          276    i.MX_TIM1_Init      tim.o
-    0x08002558   0x08002558   0x000000a4   Code   RO          277    i.MX_TIM2_Init      tim.o
-    0x080025fc   0x080025fc   0x0000006c   Code   RO          278    i.MX_TIM3_Init      tim.o
-    0x08002668   0x08002668   0x0000006c   Code   RO          279    i.MX_TIM4_Init      tim.o
+    0x08002394   0x08002394   0x00000090   Code   RO          219    i.MX_ADC1_Init      adc.o
+    0x08002424   0x08002424   0x000000d0   Code   RO          189    i.MX_GPIO_Init      gpio.o
+    0x080024f4   0x080024f4   0x00000068   Code   RO          276    i.MX_TIM1_Init      tim.o
+    0x0800255c   0x0800255c   0x000000a4   Code   RO          277    i.MX_TIM2_Init      tim.o
+    0x08002600   0x08002600   0x0000006c   Code   RO          278    i.MX_TIM3_Init      tim.o
+    0x0800266c   0x0800266c   0x00000068   Code   RO          279    i.MX_TIM4_Init      tim.o
     0x080026d4   0x080026d4   0x00000038   Code   RO          351    i.MX_USART1_UART_Init  usart.o
     0x0800270c   0x0800270c   0x00000002   Code   RO          401    i.MemManage_Handler  stm32f1xx_it.o
     0x0800270e   0x0800270e   0x00000002   PAD
@@ -2274,36 +2271,36 @@ Memory Map of the image
     0x08003a60   0x08003a60   0x0000002e   Code   RO         3780    i._printf_pre_padding  mc_w.l(printfa.o)
     0x08003a8e   0x08003a8e   0x0000000a   Code   RO         3782    i._sputc            mc_w.l(printfa.o)
     0x08003a98   0x08003a98   0x00000018   Code   RO          352    i.fputc             usart.o
-    0x08003ab0   0x08003ab0   0x000001a0   Code   RO           15    i.main              main.o
-    0x08003c50   0x08003c50   0x00000020   Code   RO           16    i.motor_pwm_encoder_start  main.o
-    0x08003c70   0x08003c70   0x00000040   Code   RO          522    i.my_get_key_num    my_key.o
-    0x08003cb0   0x08003cb0   0x000005f0   Data   RO          810    .constdata          oled_data.o
-    0x080042a0   0x080042a0   0x0000023a   Data   RO          811    .constdata          oled_data.o
-    0x080044da   0x080044da   0x000000f5   Data   RO          812    .constdata          oled_data.o
-    0x080045cf   0x080045cf   0x00000012   Data   RO         1358    .constdata          stm32f1xx_hal_rcc.o
-    0x080045e1   0x080045e1   0x00000012   Data   RO         1450    .constdata          stm32f1xx_hal_rcc_ex.o
-    0x080045f3   0x080045f3   0x00000010   Data   RO         3485    .constdata          system_stm32f1xx.o
-    0x08004603   0x08004603   0x00000008   Data   RO         3486    .constdata          system_stm32f1xx.o
-    0x0800460b   0x0800460b   0x00000001   PAD
-    0x0800460c   0x0800460c   0x00000020   Data   RO         3902    Region$$Table       anon$$obj.o
+    0x08003ab0   0x08003ab0   0x000001f8   Code   RO           15    i.main              main.o
+    0x08003ca8   0x08003ca8   0x00000020   Code   RO           16    i.motor_pwm_encoder_start  main.o
+    0x08003cc8   0x08003cc8   0x00000018   Code   RO          522    i.my_get_key_num    my_key.o
+    0x08003ce0   0x08003ce0   0x000005f0   Data   RO          810    .constdata          oled_data.o
+    0x080042d0   0x080042d0   0x0000023a   Data   RO          811    .constdata          oled_data.o
+    0x0800450a   0x0800450a   0x000000f5   Data   RO          812    .constdata          oled_data.o
+    0x080045ff   0x080045ff   0x00000012   Data   RO         1358    .constdata          stm32f1xx_hal_rcc.o
+    0x08004611   0x08004611   0x00000012   Data   RO         1450    .constdata          stm32f1xx_hal_rcc_ex.o
+    0x08004623   0x08004623   0x00000010   Data   RO         3485    .constdata          system_stm32f1xx.o
+    0x08004633   0x08004633   0x00000008   Data   RO         3486    .constdata          system_stm32f1xx.o
+    0x0800463b   0x0800463b   0x00000001   PAD
+    0x0800463c   0x0800463c   0x00000020   Data   RO         3902    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800462c, Size: 0x000009f0, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800465c, Size: 0x000009f0, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x0800462c   0x00000001   Data   RW          411    .data               stm32f1xx_it.o
-    0x20000001   0x0800462d   0x00000001   PAD
-    0x20000002   0x0800462e   0x0000001a   Data   RW          524    .data               my_key.o
-    0x2000001c   0x08004648   0x0000000c   Data   RW         1195    .data               stm32f1xx_hal.o
-    0x20000028   0x08004654   0x00000004   Data   RW         3487    .data               system_stm32f1xx.o
-    0x2000002c   0x08004658   0x00000004   Data   RW         3871    .data               mc_w.l(stdout.o)
+    0x20000000   0x0800465c   0x00000001   Data   RW          411    .data               stm32f1xx_it.o
+    0x20000001   0x0800465d   0x00000001   PAD
+    0x20000002   0x0800465e   0x0000001a   Data   RW          524    .data               my_key.o
+    0x2000001c   0x08004678   0x0000000c   Data   RW         1195    .data               stm32f1xx_hal.o
+    0x20000028   0x08004684   0x00000004   Data   RW         3487    .data               system_stm32f1xx.o
+    0x2000002c   0x08004688   0x00000004   Data   RW         3871    .data               mc_w.l(stdout.o)
     0x20000030        -       0x00000024   Zero   RW           18    .bss                main.o
     0x20000054        -       0x00000030   Zero   RW          222    .bss                adc.o
     0x20000084        -       0x00000120   Zero   RW          280    .bss                tim.o
     0x200001a4        -       0x00000048   Zero   RW          353    .bss                usart.o
     0x200001ec        -       0x00000400   Zero   RW          606    .bss                oled.o
-    0x200005ec   0x0800465c   0x00000004   PAD
+    0x200005ec   0x0800468c   0x00000004   PAD
     0x200005f0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xb.o
 
 
@@ -2314,31 +2311,31 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       488         42          0          0         48       3098   adc.o
-       208         18          0          0          0       1007   gpio.o
-       572        124          0          0         36     445612   main.o
-       104         14          0          0          0       1037   motor.o
-       464         44          0         26          0       3394   my_key.o
-      1214         58          0          0       1024      11892   oled.o
-         0          0       2335          0          0       1158   oled_data.o
-        36          8        236          0       1024        800   startup_stm32f103xb.o
-       128         24          0         12          0       5313   stm32f1xx_hal.o
-      1312         54          0          0          0       7259   stm32f1xx_hal_adc.o
-       198         14          0          0          0      28959   stm32f1xx_hal_cortex.o
-       500         34          0          0          0       3527   stm32f1xx_hal_gpio.o
-        60          8          0          0          0        874   stm32f1xx_hal_msp.o
-      1240         84         18          0          0       5136   stm32f1xx_hal_rcc.o
-       400         28         18          0          0       2477   stm32f1xx_hal_rcc_ex.o
-      2044         56          0          0          0      18117   stm32f1xx_hal_tim.o
-       108         12          0          0          0       2417   stm32f1xx_hal_tim_ex.o
-       636          6          0          0          0       4652   stm32f1xx_hal_uart.o
-       236         34          0          1          0       5917   stm32f1xx_it.o
-         2          0         24          4          0       1127   system_stm32f1xx.o
-       792         76          0          0        288       5037   tim.o
-       192         24          0          0         72       2182   usart.o
+       492         44          0          0         48       3086   adc.o
+       208         18          0          0          0        999   gpio.o
+       660        186          0          0         36     445572   main.o
+       104         12          0          0          0       1057   motor.o
+       424         28          0         26          0       3354   my_key.o
+      1214         58          0          0       1024      11840   oled.o
+         0          0       2335          0          0       1150   oled_data.o
+        36          8        236          0       1024        796   startup_stm32f103xb.o
+       128         24          0         12          0       5297   stm32f1xx_hal.o
+      1312         54          0          0          0       7227   stm32f1xx_hal_adc.o
+       198         14          0          0          0      28935   stm32f1xx_hal_cortex.o
+       500         34          0          0          0       3519   stm32f1xx_hal_gpio.o
+        60          8          0          0          0        870   stm32f1xx_hal_msp.o
+      1240         84         18          0          0       5112   stm32f1xx_hal_rcc.o
+       400         28         18          0          0       2465   stm32f1xx_hal_rcc_ex.o
+      2044         56          0          0          0      18033   stm32f1xx_hal_tim.o
+       108         12          0          0          0       2401   stm32f1xx_hal_tim_ex.o
+       636          6          0          0          0       4632   stm32f1xx_hal_uart.o
+       236         34          0          1          0       5869   stm32f1xx_it.o
+         2          0         24          4          0       1119   system_stm32f1xx.o
+       788         74          0          0        288       5009   tim.o
+       192         24          0          0         72       2162   usart.o
 
     ----------------------------------------------------------------------
-     10952        762       2664         44       2496     560992   Object Totals
+     11000        806       2664         44       2496     560504   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         18          0          1          1          4          0   (incl. Padding)
 
@@ -2404,15 +2401,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     15300        874       2664         48       2496     556644   Grand Totals
-     15300        874       2664         48       2496     556644   ELF Image Totals
-     15300        874       2664         48          0          0   ROM Totals
+     15348        918       2664         48       2496     556156   Grand Totals
+     15348        918       2664         48       2496     556156   ELF Image Totals
+     15348        918       2664         48          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                17964 (  17.54kB)
+    Total RO  Size (Code + RO Data)                18012 (  17.59kB)
     Total RW  Size (RW Data + ZI Data)              2544 (   2.48kB)
-    Total ROM Size (Code + RO Data + RW Data)      18012 (  17.59kB)
+    Total ROM Size (Code + RO Data + RW Data)      18060 (  17.64kB)
 
 ==============================================================================
 

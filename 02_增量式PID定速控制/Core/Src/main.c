@@ -62,6 +62,86 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void my_oled_test(void)
+{
+	/*在(0, 0)位置显示字符'A'，字体大小为8*16点阵*/
+	OLED_ShowChar(0, 0, 'A', OLED_8X16);
+	/*在(16, 0)位置显示字符串"Hello World!"，字体大小为8*16点阵*/
+	OLED_ShowString(16, 0, "Hello World!", OLED_8X16);
+	/*在(0, 18)位置显示字符'A'，字体大小为6*8点阵*/
+	OLED_ShowChar(0, 18, 'A', OLED_6X8);
+	/*在(16, 18)位置显示字符串"Hello World!"，字体大小为6*8点阵*/
+	OLED_ShowString(16, 18, "Hello World!", OLED_6X8);
+	/*在(0, 28)位置显示数字12345，长度为5，字体大小为6*8点阵*/
+	OLED_ShowNum(0, 28, 12345, 5, OLED_6X8);
+	/*在(40, 28)位置显示有符号数字-66，长度为2，字体大小为6*8点阵*/
+	OLED_ShowSignedNum(40, 28, -66, 2, OLED_6X8);
+	/*在(70, 28)位置显示十六进制数字0xA5A5，长度为4，字体大小为6*8点阵*/
+	OLED_ShowHexNum(70, 28, 0xA5A5, 4, OLED_6X8);
+	/*在(0, 38)位置显示二进制数字0xA5，长度为8，字体大小为6*8点阵*/
+	OLED_ShowBinNum(0, 38, 0xA5, 8, OLED_6X8);
+	/*在(60, 38)位置显示浮点数字123.45，整数部分长度为3，小数部分长度为2，字体大小为6*8点阵*/
+	OLED_ShowFloatNum(60, 38, 123.45, 3, 2, OLED_6X8);
+	/*在(0, 48)位置显示英文和汉字串"Hello,世界。"，支持中英文混写*/
+	OLED_ShowString(0, 48, "Hello,世界。", OLED_8X16);
+	/*在(96, 48)位置显示图像，宽16像素，高16像素，图像数据为Diode数组*/
+	OLED_ShowImage(96, 48, 16, 16, Diode);
+	/*在(96, 18)位置打印格式化字符串，字体大小为6*8点阵，格式化字符串为"[%02d]"*/
+	OLED_Printf(96, 18, OLED_6X8, "[%02d]", 6);
+	/*调用OLED_Update函数，将OLED显存数组的内容更新到OLED硬件进行显示*/
+	OLED_Update();
+	/*延时3000ms，观察现象*/
+	HAL_Delay(3000);
+	/*清空OLED显存数组*/
+	OLED_Clear();
+	
+	/*在(5, 8)位置画点*/
+	OLED_DrawPoint(5, 8);
+	/*获取(5, 8)位置的点*/
+	if (OLED_GetPoint(5, 8))
+	{
+		/*如果指定点点亮，则在(10, 4)位置显示字符串"YES"，字体大小为6*8点阵*/
+		OLED_ShowString(10, 4, "YES", OLED_6X8);
+	}
+	else
+	{
+		/*如果指定点未点亮，则在(10, 4)位置显示字符串"NO "，字体大小为6*8点阵*/
+		OLED_ShowString(10, 4, "NO ", OLED_6X8);
+	}
+	
+	/*在(40, 0)和(127, 15)位置之间画直线*/
+	OLED_DrawLine(40, 0, 127, 15);
+	/*在(40, 15)和(127, 0)位置之间画直线*/
+	OLED_DrawLine(40, 15, 127, 0);
+	/*在(0, 20)位置画矩形，宽12像素，高15像素，未填充*/
+	OLED_DrawRectangle(0, 20, 12, 15, OLED_UNFILLED);
+	/*在(0, 40)位置画矩形，宽12像素，高15像素，填充*/
+	OLED_DrawRectangle(0, 40, 12, 15, OLED_FILLED);
+	/*在(20, 20)、(40, 25)和(30, 35)位置之间画三角形，未填充*/
+	OLED_DrawTriangle(20, 20, 40, 25, 30, 35, OLED_UNFILLED);
+	/*在(20, 40)、(40, 45)和(30, 55)位置之间画三角形，填充*/
+	OLED_DrawTriangle(20, 40, 40, 45, 30, 55, OLED_FILLED);
+	/*在(55, 27)位置画圆，半径8像素，未填充*/
+	OLED_DrawCircle(55, 27, 8, OLED_UNFILLED);
+	/*在(55, 47)位置画圆，半径8像素，填充*/
+	OLED_DrawCircle(55, 47, 8, OLED_FILLED);
+	/*在(82, 27)位置画椭圆，横向半轴12像素，纵向半轴8像素，未填充*/
+	OLED_DrawEllipse(82, 27, 12, 8, OLED_UNFILLED);
+	/*在(82, 47)位置画椭圆，横向半轴12像素，纵向半轴8像素，填充*/
+	OLED_DrawEllipse(82, 47, 12, 8, OLED_FILLED);
+	/*在(110, 18)位置画圆弧，半径15像素，起始角度25度，终止角度125度，未填充*/
+	OLED_DrawArc(110, 18, 15, 25, 125, OLED_UNFILLED);
+	/*在(110, 38)位置画圆弧，半径15像素，起始角度25度，终止角度125度，填充*/
+	OLED_DrawArc(110, 38, 15, 25, 125, OLED_FILLED);
+	/*调用OLED_Update函数，将OLED显存数组的内容更新到OLED硬件进行显示*/
+	OLED_Update();
+	/*延时3000ms，观察现象*/
+	HAL_Delay(1000);
+	
+	/*清空OLED显存数组*/
+	OLED_Clear();
+}
+
 
 void motor_pwm_encoder_start(void)
 {
@@ -123,26 +203,32 @@ int main(void)
   {
 		/*按键修改目标值*/
 	  
-		# if 1
+		# if 0
 		/*解除以下注释后，记得屏蔽电位器旋钮修改目标值的代码*/
 		KeyNum = my_get_key_num();
 		switch(KeyNum)
 		{
 			case 0:									//如果K1按下
+				printf("key1 pressed!r\n");
 				Motor_PID.PID_Target +=	10;			//目标值加10
 				break;
 			case 1:									//如果K2按下
+				printf("key2 pressed!r\n");
 				Motor_PID.PID_Target -=	10;			//目标值加10
 				break;
-			case 2:									//如果K3按下
-				break;
-			case 3:
+			case 2:	
+				printf("key3 pressed!r\n");				//如果K3按下
 				Motor_PID.PID_Target = 0;			//目标值归0
+				break;
+			case 3: 
+				printf("key4 pressed!r\n");
 				break;
 			default:
 				break;
 		}
+		
 		#endif 
+		#if 1
 		Read_All_ADC_Channels();							//电位器读取值
 		/*
 			OLED显示
@@ -159,7 +245,7 @@ int main(void)
 			.0	小数点后保留 0 位，即只显示整数
 			f	显示为浮点数
 		*/
-		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kd);			//显示Kp
+		OLED_Printf(0, 16, OLED_8X16, "Kp:%4.2f", Motor_PID.PID_Kp);			//显示Kp
 		OLED_Printf(0, 32, OLED_8X16, "Ki:%4.2f", Motor_PID.PID_Ki);			//显示Ki
 		OLED_Printf(0, 48, OLED_8X16, "Kd:%4.2f", Motor_PID.PID_Kd);			//显示Kd
 		
@@ -169,14 +255,12 @@ int main(void)
 		
 		OLED_Update();	//OLED更新，调用显示函数后必须调用此函数更新，否则显示的内容不会更新到OLED上
 		
-
 		/*
 			//串口打印目标值、实际值和输出值
 			//配合SerialPlot绘图软件，可以显示数据的波形
 		*/
 		printf("%f,%f,%f\r\n", Motor_PID.PID_Target, Motor_PID.PID_Actual, Motor_PID.PWM_Out);		//串口打印目标值、实际值和输出值
-																								
-																
+		#endif 										
 																
 //		my_key_test_func();								//按键OLED显示
     /* USER CODE END WHILE */

@@ -38,15 +38,16 @@ extern "C" {
 /* USER CODE BEGIN ET */
 // PID控制器结构体定义
 typedef struct {
-    float PID_Target;     	// 目标值
-    float PID_Actual;      	// 实际值
-    float PWM_Out;         	// 输出值
-    float PID_Kp;          	// 比例项的权重
-    float PID_Ki;          	// 积分项的权重
-    float PID_Kd;          	// 微分项的权重
-    float PID_Error0;      	// 本次误差
-    float PID_Error1;      	// 上次误差
-    float PID_Error2;   	// 上上次误差
+    float PID_Target;      // 目标值
+    float PID_Actual;      // 实际值
+    float PWM_Out;         // 输出值
+    float PID_Kp;          // 比例项的权重
+    float PID_Ki;          // 积分项的权重
+    float PID_Kd;          // 微分项的权重
+    float PID_Error0;      // 本次误差
+    float PID_Error1;      // 上次误差
+	float PID_Error2;      // 上上次误差
+    float PID_ErrorInt;    // 误差积分
 } PID_Controller;
 
 // 创建PID控制器实例
