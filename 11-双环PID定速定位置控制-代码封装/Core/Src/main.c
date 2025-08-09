@@ -186,6 +186,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+	HAL_ADCEx_Calibration_Start(&hadc1); // ADC 校准
 	OLED_Init();
 	motor_pwm_encoder_start();									//电机PWM和编码器检测初始化
 	Motor_PID_Config();											//PID初始化			
