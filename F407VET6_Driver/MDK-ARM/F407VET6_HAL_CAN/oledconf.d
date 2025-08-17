@@ -1,0 +1,9 @@
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\src\oledconf.c
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\oledconf.h
+f407vet6_hal_can\oledconf.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\bmp.h
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\font12x12.h
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\font16x16.h
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\font24x24.h
+f407vet6_hal_can\oledconf.o: ..\HardWare\OLED\inc\font32x32.h
+f407vet6_hal_can\oledconf.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
