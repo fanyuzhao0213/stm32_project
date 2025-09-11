@@ -45,6 +45,7 @@ stm32f103_driver\oled.o: ../HardWare/CAN/my_can.h
 stm32f103_driver\oled.o: ../Core/Inc/main.h
 stm32f103_driver\oled.o: ../Core/Inc/can.h
 stm32f103_driver\oled.o: ../HardWare/SOFT_IIC/soft_iic.h
-stm32f103_driver\oled.o: ..\HardWare\SOFT_SPI\soft_spi.h
-stm32f103_driver\oled.o: ..\HardWare\W25Q128\W25Q128.h
-stm32f103_driver\oled.o: ..\HardWare\W25Q128\W25Q128_Ins.h
+stm32f103_driver\oled.o: ../HardWare/SOFT_SPI/soft_spi.h
+stm32f103_driver\oled.o: ../HardWare/W25Q128/W25Q128.h
+stm32f103_driver\oled.o: ../HardWare/W25Q128/W25Q128_Ins.h
+stm32f103_driver\oled.o: ../HardWare/NRF_24L01/NRF24L01.h

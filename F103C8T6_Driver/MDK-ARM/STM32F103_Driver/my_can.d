@@ -42,8 +42,9 @@ stm32f103_driver\my_can.o: ../HardWare/OLED/OLED_Data.h
 stm32f103_driver\my_can.o: ../HardWare/CAN/my_can.h
 stm32f103_driver\my_can.o: ../HardWare/SOFT_IIC/soft_iic.h
 stm32f103_driver\my_can.o: ../Core/Inc/main.h
-stm32f103_driver\my_can.o: ..\HardWare\SOFT_SPI\soft_spi.h
-stm32f103_driver\my_can.o: ..\HardWare\W25Q128\W25Q128.h
-stm32f103_driver\my_can.o: ..\HardWare\W25Q128\W25Q128_Ins.h
+stm32f103_driver\my_can.o: ../HardWare/SOFT_SPI/soft_spi.h
+stm32f103_driver\my_can.o: ../HardWare/W25Q128/W25Q128.h
+stm32f103_driver\my_can.o: ../HardWare/W25Q128/W25Q128_Ins.h
+stm32f103_driver\my_can.o: ../HardWare/NRF_24L01/NRF24L01.h
 stm32f103_driver\my_can.o: ../Core/Inc/can.h
 stm32f103_driver\my_can.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

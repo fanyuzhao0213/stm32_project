@@ -22,15 +22,22 @@
    修改SPI端口 所在端口和引脚
    如果有多个片选，则仿写CS函数就行
 ------------------------------*/
+#define   USE_W25Q128           0
 
-#define SPI_CS_PORT					GPIOB
-#define SPI_CS_PIN					GPIO_PIN_12
-#define SPI_MOSI_PORT				GPIOA
-#define SPI_MOSI_PIN				GPIO_PIN_7
-#define SPI_MISO_PORT				GPIOA
-#define SPI_MISO_PIN				GPIO_PIN_6
-#define SPI_SCK_PORT				GPIOA
-#define SPI_SCK_PIN					GPIO_PIN_5
+#if USE_W25Q128
+#define SPI_CS_PORT				GPIOB
+#define SPI_CS_PIN				GPIO_PIN_12
+#else
+#define SPI_CS_PORT				GPIOB
+#define SPI_CS_PIN				GPIO_PIN_0
+#endif
+
+#define SPI_MOSI_PORT			GPIOA
+#define SPI_MOSI_PIN			GPIO_PIN_7
+#define SPI_MISO_PORT			GPIOA
+#define SPI_MISO_PIN			GPIO_PIN_6
+#define SPI_SCK_PORT			GPIOA
+#define SPI_SCK_PIN				GPIO_PIN_5
 
 /*==================== 外部函数声明 ====================*/
 

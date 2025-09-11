@@ -43,6 +43,7 @@ stm32f103_driver\my_key.o: ../Core/Inc/main.h
 stm32f103_driver\my_key.o: ../Core/Inc/can.h
 stm32f103_driver\my_key.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 stm32f103_driver\my_key.o: ../HardWare/SOFT_IIC/soft_iic.h
-stm32f103_driver\my_key.o: ..\HardWare\SOFT_SPI\soft_spi.h
-stm32f103_driver\my_key.o: ..\HardWare\W25Q128\W25Q128.h
-stm32f103_driver\my_key.o: ..\HardWare\W25Q128\W25Q128_Ins.h
+stm32f103_driver\my_key.o: ../HardWare/SOFT_SPI/soft_spi.h
+stm32f103_driver\my_key.o: ../HardWare/W25Q128/W25Q128.h
+stm32f103_driver\my_key.o: ../HardWare/W25Q128/W25Q128_Ins.h
+stm32f103_driver\my_key.o: ../HardWare/NRF_24L01/NRF24L01.h

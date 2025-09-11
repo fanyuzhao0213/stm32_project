@@ -41,6 +41,7 @@ extern "C" {
 #include "soft_iic.h"
 #include "soft_spi.h"
 #include "W25Q128.h"
+#include "NRF24L01.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -66,6 +67,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define NRF_IRQ_Pin GPIO_PIN_2
+#define NRF_IRQ_GPIO_Port GPIOB
+#define NRF_IRQ_EXTI_IRQn EXTI2_IRQn
 #define LED1_Pin GPIO_PIN_7
 #define LED1_GPIO_Port GPIOB
 #define LED2_Pin GPIO_PIN_8

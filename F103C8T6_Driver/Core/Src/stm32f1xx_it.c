@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "tim.h"
+#include "NRF24L01.h"
+#include "NRF24L01_REG.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -202,6 +204,20 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles EXTI line2 interrupt.
+  */
+void EXTI2_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI2_IRQn 0 */
+
+  /* USER CODE END EXTI2_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(NRF_IRQ_Pin);
+  /* USER CODE BEGIN EXTI2_IRQn 1 */
+
+  /* USER CODE END EXTI2_IRQn 1 */
+}
+
+/**
   * @brief This function handles USB high priority or CAN TX interrupts.
   */
 void USB_HP_CAN1_TX_IRQHandler(void)
@@ -263,10 +279,55 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* tim_baseHandle)
 	if(tim_baseHandle->Instance == htim1.Instance)
 	{
 		Key_Tick();
-		if(Key_Check(KEY_1, KEY_SINGLE) == 1)
-		{
-			LED2_TOGGLE();
-		}	
+//		if(Key_Check(KEY_1, KEY_SINGLE) == 1)
+//		{
+//			LED2_TOGGLE();
+//		}	
 	}
 }
+
+
+/**
+  * @brief 外部中断回调函数
+  * @param GPIO_Pin 触发中断的引脚编号
+  * @note  在这里区分是第1路还是第2路传感器
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if(GPIO_Pin == NRF_IRQ_Pin) //NRF IRQ中断管脚
+    {
+		uint8_t status = NRF24L01_ReadStatus();
+
+        /* 1. 数据接收完成 */
+        if (status & (1 << 6)) // RX_DR
+        {
+			/*读接收有效载荷，存放在全局数组NRF24L01_RxPacket中，数据宽度为NRF24L01_RX_PACKET_WIDTH*/
+			NRF24L01_ReadRxPayload(NRF24L01_RxPacket, NRF24L01_RX_PACKET_WIDTH);
+			
+            NRF24L01_WriteReg(NRF24L01_STATUS, 1 << 6); // 清除RX_DR标志
+            NRF24L01_FlushRx(); // 清空接收FIFO
+
+            printf("接收到数据: ");
+            for (int i = 0; i < NRF24L01_RX_PACKET_WIDTH; i++)
+                printf("%02X ", NRF24L01_RxPacket[i]);
+            printf("\r\n");
+        }
+
+        /* 2. 发送完成 */
+        if (status & (1 << 5)) // TX_DS
+        {
+            NRF24L01_WriteReg(NRF24L01_STATUS, 1 << 5); // 清除TX_DS标志
+            printf("发送完成\r\n");
+        }
+
+        /* 3. 发送失败 */
+        if (status & (1 << 4)) // MAX_RT
+        {
+            NRF24L01_WriteReg(NRF24L01_STATUS, 1 << 4); // 清除MAX_RT标志
+            NRF24L01_FlushTx(); // 清空发送FIFO
+            printf("发送失败，达到最大重发次数\r\n");
+        }
+    }
+}
+
 /* USER CODE END 1 */

@@ -46,7 +46,15 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t SendFlag;
+uint8_t ReceiveFlag;
+typedef struct {
+    uint16_t successCount;
+    uint16_t failedCount;
+} Counter_t;
 
+Counter_t txCounter = {0, 0}; // 发送计数
+Counter_t rxCounter = {0, 0}; // 接收计数
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,6 +76,43 @@ void rtt_printf(const char *fmt, ...)
 
     SEGGER_RTT_WriteString(0, buffer);
 }
+
+/* ======== 工具函数 ======== */
+// 打印数组内容
+void PrintBuffer(const char *title, uint8_t *buf, uint8_t len)
+{
+    printf("%s", title);
+    for (uint8_t i = 0; i < len; i++) {
+        printf("%02X ", buf[i]);
+    }
+    printf("\r\n");
+}
+
+/* ======== 接收处理 ======== */
+void HandleReceive(void)
+{
+	/*主循环内循环执行NRF24L01_Receive函数，接收数据，同时返回接收标志位，方便用户了解接收状态*/
+	/*接收标志位与接收状态的对应关系，可以转到此函数定义上方查看*/
+	ReceiveFlag = NRF24L01_Receive();
+			
+	if (ReceiveFlag)				//接收标志位不为0，表示收到了一个数据包
+	{
+		printf("[RX] ReceiveFlag=%d\r\n", ReceiveFlag);
+		if (ReceiveFlag == 1)		//接收标志位为1，表示接收成功
+		{
+			rxCounter.successCount++;
+			printf("[RX OK] Count=%d\r\n", rxCounter.successCount);
+		}
+		else	//接收标志位不为0也不为1，即2/3，表示此次接收产生了错误，错误接收的数据不应该使用
+		{
+			rxCounter.failedCount++;
+			printf("[RX FAIL] Count=%d\r\n", rxCounter.failedCount);
+		}
+		PrintBuffer("RX Data: ", NRF24L01_RxPacket, 32);
+	}
+}
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -109,14 +154,27 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 定时器更新中断
 	IIC_GPIO_Init();			//IIC初始化
-	SPI_GPIO_Init();
+	SPI_GPIO_Init();			//SPI初始化
+	NRF24L01_Init();			//NRF24L01+初始化
 	OLED_Init();				//OLED初始化
 	/*显示十六进制数字0xA5A5，长度为4，字体大小为6*8点阵*/
 	OLED_Printf(0, 0, OLED_8X16,"    MY_TEST    ");
 	OLED_Update();
 
+	#if USE_W25Q128
 	W25Q128_Test();				//W25Q128测试函数
-	
+	#else
+	// 调用自检函数
+//    uint8_t result = NRF24L01_TestHardware();
+//    if(result == 0)
+//    {
+//        printf("NRF24L01 硬件自检通过，可以进行后续通信测试。\r\n");
+//    }
+//    else
+//    {
+//        printf("NRF24L01 硬件自检失败，错误码 = %d\r\n", result);
+//    }
+	#endif
 	CAN_Loopback_Test_Init(); // 设置回环模式并启动 CAN
 	
 	printf("----systerm start!\r\n");
