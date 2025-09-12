@@ -22,11 +22,12 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+void HAL_UART_IDLECallback(UART_HandleTypeDef *huart);
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -57,6 +58,8 @@
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan1;
 extern TIM_HandleTypeDef htim1;
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 
@@ -248,12 +251,50 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
+    uint32_t isrflags = READ_REG(huart1.Instance->SR);  // 读取状态寄存器
+    uint32_t cr1its   = READ_REG(huart1.Instance->CR1); // 读取控制寄存器
+
+	/*USART_CR1_IDLEIE CR1寄存器中的IDLE中断使能位，用户软件是否允许响应空闲中断。*/
+    /* 判断是否产生了IDLE中断 */
+    if(((isrflags & USART_SR_IDLE) != RESET) && ((cr1its & USART_CR1_IDLEIE) != RESET))
+    {
+        __HAL_UART_CLEAR_IDLEFLAG(&huart1);  // 清除IDLE标志位
+        HAL_UART_IDLECallback(&huart1);      // 调用自定义回调函数
+    }
 
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA2 stream2 global interrupt.
+  */
+void DMA2_Stream2_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
+
+  /* USER CODE END DMA2_Stream2_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart1_rx);
+  /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
+
+  /* USER CODE END DMA2_Stream2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA2 stream7 global interrupt.
+  */
+void DMA2_Stream7_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream7_IRQn 0 */
+
+  /* USER CODE END DMA2_Stream7_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart1_tx);
+  /* USER CODE BEGIN DMA2_Stream7_IRQn 1 */
+
+  /* USER CODE END DMA2_Stream7_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
@@ -267,5 +308,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* tim_baseHandle)
 			rtt_printf("KEY_1 pressed!\r\n");
 		}	
 	}
+}
+
+/*串口空闲中断触发*/
+void HAL_UART_IDLECallback(UART_HandleTypeDef *huart)
+{
+    if(huart->Instance == USART1)
+    {
+        // 停止DMA
+        HAL_UART_DMAStop(&huart1);
+
+        // 计算接收长度
+        uart_rx_len = UART_DMA_RX_BUF_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
+
+        if(uart_rx_len > 0)
+        {
+            memcpy(uart_frame_buf, uart_dma_rx_buf, uart_rx_len);
+            uart_frame_flag = 1; // 标记一帧数据接收完成
+        }
+
+        // 重新启动DMA接收
+        HAL_UART_Receive_DMA(&huart1, uart_dma_rx_buf, UART_DMA_RX_BUF_SIZE);
+    }
 }
 /* USER CODE END 1 */

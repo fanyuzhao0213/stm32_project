@@ -46,6 +46,6 @@ f407vet6_hal_can\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 f407vet6_hal_can\oled.o: ../HardWare/SEGGER_RTT/SEGGER_RTT.h
 f407vet6_hal_can\oled.o: ../HardWare/SEGGER_RTT/SEGGER_RTT_Conf.h
 f407vet6_hal_can\oled.o: ../HardWare/KEY/my_key.h
-f407vet6_hal_can\oled.o: ..\HardWare\CAN\my_can.h
+f407vet6_hal_can\oled.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\oled.o: ../Core/Inc/main.h
 f407vet6_hal_can\oled.o: ../Core/Inc/can.h

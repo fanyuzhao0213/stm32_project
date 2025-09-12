@@ -9,6 +9,7 @@
 "f407vet6_hal_can\main.o"
 "f407vet6_hal_can\gpio.o"
 "f407vet6_hal_can\can.o"
+"f407vet6_hal_can\dma.o"
 "f407vet6_hal_can\i2c.o"
 "f407vet6_hal_can\tim.o"
 "f407vet6_hal_can\usart.o"

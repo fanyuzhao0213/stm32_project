@@ -21,10 +21,17 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+// DMA接收缓冲区
+uint8_t uart_dma_rx_buf[UART_DMA_RX_BUF_SIZE] = {0};
+// 实际接收数据缓存（防止数据覆盖）
+uint8_t uart_frame_buf[UART_DMA_RX_BUF_SIZE] = {0};
+uint16_t uart_rx_len = 0;    // 实际接收到的数据长度
+uint8_t uart_frame_flag = 0; // 一帧接收完成标志
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USART1 init function */
 
@@ -51,7 +58,10 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-
+	// 使能空闲中断
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+    // 启动DMA接收
+    HAL_UART_Receive_DMA(&huart1, uart_dma_rx_buf, UART_DMA_RX_BUF_SIZE);
   /* USER CODE END USART1_Init 2 */
 
 }
@@ -80,6 +90,43 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+    /* USART1 DMA Init */
+    /* USART1_RX Init */
+    hdma_usart1_rx.Instance = DMA2_Stream2;
+    hdma_usart1_rx.Init.Channel = DMA_CHANNEL_4;
+    hdma_usart1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_usart1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart1_rx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart1_rx.Init.Mode = DMA_NORMAL;
+    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart1_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart1_rx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart1_rx);
+
+    /* USART1_TX Init */
+    hdma_usart1_tx.Instance = DMA2_Stream7;
+    hdma_usart1_tx.Init.Channel = DMA_CHANNEL_4;
+    hdma_usart1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_usart1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart1_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart1_tx.Init.Mode = DMA_NORMAL;
+    hdma_usart1_tx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart1_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart1_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart1_tx);
+
     /* USART1 interrupt Init */
     HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USART1_IRQn);
@@ -106,6 +153,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
 
+    /* USART1 DMA DeInit */
+    HAL_DMA_DeInit(uartHandle->hdmarx);
+    HAL_DMA_DeInit(uartHandle->hdmatx);
+
     /* USART1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspDeInit 1 */
@@ -115,5 +166,22 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void my_data_analysis(void)
+{
+	/* 判断是否接收到一帧完整数据 */
+	if(uart_frame_flag)
+	{
+		uart_frame_flag = 0;  // 清除标志位
 
+		/* 打印接收到的数据 */
+		rtt_printf("Recv [%d]: ", uart_rx_len);
+		for(int i = 0; i < uart_rx_len; i++)
+		{
+			rtt_printf("%02X ", uart_frame_buf[i]); // 以16进制格式打印
+		}
+		rtt_printf("\r\n");
+
+		/* TODO: 在此处添加数据解析处理逻辑 */
+	}
+}
 /* USER CODE END 1 */

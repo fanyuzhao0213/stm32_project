@@ -35,13 +35,22 @@ extern "C" {
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
+#define UART_DMA_RX_BUF_SIZE   256   // DMA缓冲区大小
+
+
+// DMA接收缓冲区
+extern uint8_t uart_dma_rx_buf[UART_DMA_RX_BUF_SIZE];
+// 实际接收数据缓存（防止数据覆盖）
+extern uint8_t uart_frame_buf[UART_DMA_RX_BUF_SIZE];
+extern uint16_t uart_rx_len;    // 实际接收到的数据长度
+extern uint8_t uart_frame_flag; // 一帧接收完成标志
 
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void my_data_analysis(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

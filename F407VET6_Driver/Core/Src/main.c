@@ -1,4 +1,4 @@
- /* USER CODE BEGIN Header */
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "can.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -73,6 +74,10 @@ void rtt_printf(const char *fmt, ...)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// 发送测试字符串
+uint8_t dma_test_data[] = "Hello, I am hahaha!\r\n";
+// 接收缓存区大小为200
+uint8_t recvStr[200] = {0};
 
 /* USER CODE END 0 */
 
@@ -105,30 +110,32 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CAN1_Init();
   MX_I2C1_Init();
   MX_TIM1_Init();
   MX_USART1_UART_Init();
+  MX_I2C2_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	OLED_Init();
-	/*显示十六进制数字0xA5A5，长度为4，字体大小为6*8点阵*/
-	OLED_Printf(0, 0, OLED_8X16,"    CAN_TEST    ");
-	OLED_Update();
-	CAN_Loopback_Test_Init(); // 设置回环模式并启动 CAN
-	
-	
-	HAL_TIM_Base_Start_IT(&htim1); 						// htim8 定时器更新中断
+//	OLED_Init();
+//	/*显示十六进制数字0xA5A5，长度为4，字体大小为6*8点阵*/
+//	OLED_Printf(0, 0, OLED_8X16,"    FOC_TEST    ");
+//	OLED_Update();
+//	CAN_Loopback_Test_Init(); // 设置回环模式并启动 CAN	
+	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 定时器更新中断
 	rtt_printf("Hello, RTT!\r\n");
 	rtt_printf("----systerm start!\r\n");
+	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)dma_test_data, sizeof(dma_test_data));
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  LED_TOGGLE();
-	  HAL_Delay(500);
-	  CAN_Send_Test_Frames();  //发送测试数据
+	my_data_analysis();
+	LED_TOGGLE();
+	HAL_Delay (1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -153,15 +160,14 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 4;
   RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();

@@ -43,7 +43,7 @@ f407vet6_hal_can\my_key.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 f407vet6_hal_can\my_key.o: ../HardWare/SEGGER_RTT/SEGGER_RTT.h
 f407vet6_hal_can\my_key.o: ../HardWare/SEGGER_RTT/SEGGER_RTT_Conf.h
 f407vet6_hal_can\my_key.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-f407vet6_hal_can\my_key.o: ..\HardWare\CAN\my_can.h
+f407vet6_hal_can\my_key.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\my_key.o: ../Core/Inc/main.h
 f407vet6_hal_can\my_key.o: ../Core/Inc/can.h
 f407vet6_hal_can\my_key.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
