@@ -50,4 +50,5 @@ f407vet6_hal_can\inv_mpu.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\inv_mpu.o: ../Core/Inc/main.h
 f407vet6_hal_can\inv_mpu.o: ../Core/Inc/can.h
 f407vet6_hal_can\inv_mpu.o: ../HardWare/MPU6050/atk_ms6050.h
+f407vet6_hal_can\inv_mpu.o: ../HardWare/FOC/my_foc.h
 f407vet6_hal_can\inv_mpu.o: ..\HardWare\MPU6050\DMP\inv_mpu_dmp_motion_driver.h

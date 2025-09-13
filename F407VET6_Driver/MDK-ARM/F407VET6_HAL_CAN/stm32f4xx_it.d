@@ -48,5 +48,7 @@ f407vet6_hal_can\stm32f4xx_it.o: ../Core/Inc/main.h
 f407vet6_hal_can\stm32f4xx_it.o: ../Core/Inc/can.h
 f407vet6_hal_can\stm32f4xx_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 f407vet6_hal_can\stm32f4xx_it.o: ../HardWare/MPU6050/atk_ms6050.h
+f407vet6_hal_can\stm32f4xx_it.o: ../HardWare/FOC/my_foc.h
+f407vet6_hal_can\stm32f4xx_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 f407vet6_hal_can\stm32f4xx_it.o: ../Core/Inc/stm32f4xx_it.h
 f407vet6_hal_can\stm32f4xx_it.o: ../Core/Inc/usart.h

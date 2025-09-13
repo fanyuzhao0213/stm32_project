@@ -39,6 +39,10 @@
 "f407vet6_hal_can\inv_mpu_dmp_motion_driver.o"
 "f407vet6_hal_can\atk_ms6050_iic.o"
 "f407vet6_hal_can\atk_ms6050.o"
+"f407vet6_hal_can\as5600.o"
+"f407vet6_hal_can\my_foc.o"
+"f407vet6_hal_can\lowpass_filter.o"
+"f407vet6_hal_can\pid.o"
 --library_type=microlib --strict --scatter "F407VET6_HAL_CAN\F407VET6_HAL_CAN.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

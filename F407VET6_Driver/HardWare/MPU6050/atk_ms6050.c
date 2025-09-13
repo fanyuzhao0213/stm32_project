@@ -459,8 +459,8 @@ void mpu6050_demo_run(void)
             az -= mpu_offset.accel_offset_z;
 
             rtt_printf("Pitch: %.2f, Roll: %.2f, Yaw: %.2f\r\n", pitch, roll, yaw);
-            rtt_printf("Accel: X=%d Y=%d Z=%d, Gyro: X=%d Y=%d Z=%d, Temp=%d\r\n",
-                       ax, ay, az, gx, gy, gz, temp/100);
+//            rtt_printf("Accel: X=%d Y=%d Z=%d, Gyro: X=%d Y=%d Z=%d, Temp=%d\r\n",
+//                       ax, ay, az, gx, gy, gz, temp/100);
         }
 
         HAL_Delay(100); // 50ms 采样周期

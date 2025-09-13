@@ -49,3 +49,5 @@ f407vet6_hal_can\can.o: ../Core/Inc/main.h
 f407vet6_hal_can\can.o: ../Core/Inc/can.h
 f407vet6_hal_can\can.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 f407vet6_hal_can\can.o: ../HardWare/MPU6050/atk_ms6050.h
+f407vet6_hal_can\can.o: ../HardWare/FOC/my_foc.h
+f407vet6_hal_can\can.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

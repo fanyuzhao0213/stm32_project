@@ -36,12 +36,15 @@ extern TIM_HandleTypeDef htim1;
 
 extern TIM_HandleTypeDef htim2;
 
+extern TIM_HandleTypeDef htim3;
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
 void MX_TIM1_Init(void);
 void MX_TIM2_Init(void);
+void MX_TIM3_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
@@ -49,6 +52,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void BLDC_PWM_SetDuty(uint8_t duty_u, uint8_t duty_v, uint8_t duty_w);
 void BLDC_PWM_Stop(void);
 void BLDC_PWM_Start(void);
+uint32_t Get_Systerm_Us(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -116,6 +116,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_I2C2_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 //	OLED_Init();
 //	/*显示十六进制数字0xA5A5，长度为4，字体大小为6*8点阵*/
@@ -125,24 +126,31 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 定时器更新中断
 	rtt_printf("Hello, RTT!\r\n");
 	rtt_printf("----systerm start!\r\n");
-
 	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)dma_test_data, sizeof(dma_test_data));
-	
 	BLDC_PWM_SetDuty(0, 0, 0); // 三相占空比示例
 	BLDC_PWM_Start();     // 启动 PWM 输出
+	uint32_t t1 = Get_Systerm_Us();
+    HAL_Delay(100);
+    uint32_t t2 = Get_Systerm_Us();
+
+    rtt_printf("Elapsed: %lu us\r\n", t2 - t1); // 打印经过时间
 	
-	  float roll, yaw, pitch;
-	  mpu6050_demo_run();
+//	mpu6050_demo_run();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	BLDC_PWM_SetDuty(30, 60, 90); // 三相占空比示例
 	my_data_analysis();				//串口数据解析
-//	LED_TOGGLE();
-	HAL_Delay (100);
+	float current_angle = my_foc_get_electrical_angle();
+	float target_angle = my_foc_get_target_angle();
+	// 简单 P 控制 q轴电压
+	float error = target_angle - current_angle;
+	float Uq = error * 5.0f;  // P系数 5.0f
+	Uq = CONSTRAIN(Uq, -6.0f, 6.0f);
+	my_foc_set_torque(Uq, current_angle);
+	HAL_Delay(1);  // 控制循环 1ms
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

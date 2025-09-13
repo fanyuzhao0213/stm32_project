@@ -39,6 +39,7 @@ extern "C" {
 #include "OLED.h"
 #include "my_can.h"
 #include "atk_ms6050.h"
+#include "my_foc.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

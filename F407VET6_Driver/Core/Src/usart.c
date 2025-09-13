@@ -182,6 +182,18 @@ void my_data_analysis(void)
 		rtt_printf("\r\n");
 
 		/* TODO: 在此处添加数据解析处理逻辑 */
+		/* 将接收到的数据按字符串处理为目标角度 */
+        char temp_str[32] = {0};
+        if(uart_rx_len < sizeof(temp_str)) {
+            memcpy(temp_str, uart_frame_buf, uart_rx_len);
+            temp_str[uart_rx_len] = '\0';  // 确保字符串结束符
+
+            /* 转浮点数作为电机目标角度 */
+            motor_target_angle = atof(temp_str);
+            rtt_printf("[FOC] Set target angle: %.2f\r\n", motor_target_angle);
+        } else {
+            rtt_printf("[Error] Received data too long!\r\n");
+        }
 	}
 }
 /* USER CODE END 1 */

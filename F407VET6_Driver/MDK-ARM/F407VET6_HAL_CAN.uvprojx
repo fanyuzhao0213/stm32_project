@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../HardWare/KEY;../HardWare/SEGGER_RTT;../HardWare/OLED;../HardWare/CAN;../HardWare/MPU6050;..\HardWare\MPU6050\DMP</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../HardWare/KEY;../HardWare/SEGGER_RTT;../HardWare/OLED;../HardWare/CAN;../HardWare/MPU6050;../HardWare/MPU6050/DMP;../HardWare/FOC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -658,6 +658,31 @@
               <FileName>atk_ms6050.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HardWare\MPU6050\atk_ms6050.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MY_FOC</GroupName>
+          <Files>
+            <File>
+              <FileName>as5600.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\FOC\as5600.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_foc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\FOC\my_foc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lowpass_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\FOC\lowpass_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\FOC\pid.c</FilePath>
             </File>
           </Files>
         </Group>
