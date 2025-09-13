@@ -27,6 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
 
 /* USER CODE END Includes */
 
@@ -78,7 +79,6 @@ void rtt_printf(const char *fmt, ...)
 uint8_t dma_test_data[] = "Hello, I am hahaha!\r\n";
 // 接收缓存区大小为200
 uint8_t recvStr[200] = {0};
-
 /* USER CODE END 0 */
 
 /**
@@ -89,7 +89,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -126,16 +125,24 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 定时器更新中断
 	rtt_printf("Hello, RTT!\r\n");
 	rtt_printf("----systerm start!\r\n");
+
 	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)dma_test_data, sizeof(dma_test_data));
+	
+	BLDC_PWM_SetDuty(0, 0, 0); // 三相占空比示例
+	BLDC_PWM_Start();     // 启动 PWM 输出
+	
+	  float roll, yaw, pitch;
+	  mpu6050_demo_run();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	my_data_analysis();
-	LED_TOGGLE();
-	HAL_Delay (1000);
+//	BLDC_PWM_SetDuty(30, 60, 90); // 三相占空比示例
+	my_data_analysis();				//串口数据解析
+//	LED_TOGGLE();
+	HAL_Delay (100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

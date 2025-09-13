@@ -46,7 +46,9 @@ void MX_TIM2_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN Prototypes */
-
+void BLDC_PWM_SetDuty(uint8_t duty_u, uint8_t duty_v, uint8_t duty_w);
+void BLDC_PWM_Stop(void);
+void BLDC_PWM_Start(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

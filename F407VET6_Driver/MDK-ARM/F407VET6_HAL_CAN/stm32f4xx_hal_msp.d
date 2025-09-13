@@ -47,3 +47,4 @@ f407vet6_hal_can\stm32f4xx_hal_msp.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\stm32f4xx_hal_msp.o: ../Core/Inc/main.h
 f407vet6_hal_can\stm32f4xx_hal_msp.o: ../Core/Inc/can.h
 f407vet6_hal_can\stm32f4xx_hal_msp.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+f407vet6_hal_can\stm32f4xx_hal_msp.o: ../HardWare/MPU6050/atk_ms6050.h

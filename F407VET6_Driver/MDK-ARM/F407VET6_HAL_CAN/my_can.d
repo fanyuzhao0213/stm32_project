@@ -45,5 +45,7 @@ f407vet6_hal_can\my_can.o: ../HardWare/KEY/my_key.h
 f407vet6_hal_can\my_can.o: ../HardWare/OLED/OLED.h
 f407vet6_hal_can\my_can.o: ../HardWare/OLED/OLED_Data.h
 f407vet6_hal_can\my_can.o: ../HardWare/CAN/my_can.h
+f407vet6_hal_can\my_can.o: ../HardWare/MPU6050/atk_ms6050.h
+f407vet6_hal_can\my_can.o: ../Core/Inc/main.h
 f407vet6_hal_can\my_can.o: ../Core/Inc/can.h
 f407vet6_hal_can\my_can.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

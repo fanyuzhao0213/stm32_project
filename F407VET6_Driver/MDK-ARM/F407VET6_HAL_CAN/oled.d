@@ -49,3 +49,4 @@ f407vet6_hal_can\oled.o: ../HardWare/KEY/my_key.h
 f407vet6_hal_can\oled.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\oled.o: ../Core/Inc/main.h
 f407vet6_hal_can\oled.o: ../Core/Inc/can.h
+f407vet6_hal_can\oled.o: ../HardWare/MPU6050/atk_ms6050.h

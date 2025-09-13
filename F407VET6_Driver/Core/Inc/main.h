@@ -38,7 +38,7 @@ extern "C" {
 #include "my_key.h"
 #include "OLED.h"
 #include "my_can.h"
-
+#include "atk_ms6050.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -64,6 +64,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define MPU6050_INT_Pin GPIO_PIN_12
+#define MPU6050_INT_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 #define LED_TOGGLE() 	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);

@@ -47,6 +47,7 @@ f407vet6_hal_can\main.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\main.o: ../Core/Inc/main.h
 f407vet6_hal_can\main.o: ../Core/Inc/can.h
 f407vet6_hal_can\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+f407vet6_hal_can\main.o: ../HardWare/MPU6050/atk_ms6050.h
 f407vet6_hal_can\main.o: ../Core/Inc/dma.h
 f407vet6_hal_can\main.o: ../Core/Inc/i2c.h
 f407vet6_hal_can\main.o: ../Core/Inc/tim.h

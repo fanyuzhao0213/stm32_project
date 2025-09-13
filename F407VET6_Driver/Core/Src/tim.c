@@ -222,5 +222,43 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 }
 
 /* USER CODE BEGIN 1 */
+/*======================= 设置占空比 =======================*/
+/**
+ * @brief  设置 U/V/W 三路 PWM 占空比
+ * @param  duty_u: U 相占空比 (0-100)
+ * @param  duty_v: V 相占空比 (0-100)
+ * @param  duty_w: W 相占空比 (0-100)
+ * @note   占空比 = CCR / ARR
+ */
+void BLDC_PWM_SetDuty(uint8_t duty_u, uint8_t duty_v, uint8_t duty_w)
+{
+    if (duty_u > 100) duty_u = 100;
+    if (duty_v > 100) duty_v = 100;
+    if (duty_w > 100) duty_w = 100;
 
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty_u); // 设置 U 相
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, duty_v); // 设置 V 相
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, duty_w); // 设置 W 相
+}
+
+/*======================= 停止输出 =======================*/
+/**
+ * @brief 停止所有 PWM 输出
+ */
+void BLDC_PWM_Stop(void)
+{
+    HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+    HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
+}
+/*======================= 启动 PWM 输出 =======================*/
+/**
+ * @brief  启动 TIM2 的 CH2、CH3、CH4 PWM 输出
+ */
+void BLDC_PWM_Start(void)
+{
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // U 相
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); // V 相
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4); // W 相
+}
 /* USER CODE END 1 */

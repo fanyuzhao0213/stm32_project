@@ -48,3 +48,4 @@ f407vet6_hal_can\usart.o: ../HardWare/CAN/my_can.h
 f407vet6_hal_can\usart.o: ../Core/Inc/main.h
 f407vet6_hal_can\usart.o: ../Core/Inc/can.h
 f407vet6_hal_can\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+f407vet6_hal_can\usart.o: ../HardWare/MPU6050/atk_ms6050.h

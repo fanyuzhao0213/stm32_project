@@ -35,7 +35,11 @@
 "f407vet6_hal_can\stm32f4xx_hal_tim_ex.o"
 "f407vet6_hal_can\stm32f4xx_hal_uart.o"
 "f407vet6_hal_can\system_stm32f4xx.o"
---strict --scatter "F407VET6_HAL_CAN\F407VET6_HAL_CAN.sct"
+"f407vet6_hal_can\inv_mpu.o"
+"f407vet6_hal_can\inv_mpu_dmp_motion_driver.o"
+"f407vet6_hal_can\atk_ms6050_iic.o"
+"f407vet6_hal_can\atk_ms6050.o"
+--library_type=microlib --strict --scatter "F407VET6_HAL_CAN\F407VET6_HAL_CAN.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "F407VET6_HAL_CAN.map" -o F407VET6_HAL_CAN\F407VET6_HAL_CAN.axf
