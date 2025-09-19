@@ -63,7 +63,7 @@ void rtt_printf(const char *fmt, ...)
         rtt_initialized = true;
     }
 
-    char buffer[256];  // ÁÙÊ±¸ñÊ½»¯»º³åÇø£¬¸ù¾İÊµ¼ÊĞèÒª¿Éµ÷Õû´óĞ¡
+    char buffer[256];  // ï¿½ï¿½Ê±ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Òªï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡
     va_list args;
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
@@ -75,10 +75,12 @@ void rtt_printf(const char *fmt, ...)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// ·¢ËÍ²âÊÔ×Ö·û´®
+// ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 uint8_t dma_test_data[] = "Hello, I am hahaha!\r\n";
-// ½ÓÊÕ»º´æÇø´óĞ¡Îª200
+// ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡Îª200
 uint8_t recvStr[200] = {0};
+// å®å®šä¹‰ AS5600 I2C åœ°å€
+#define AS5600_I2C_ADDR    (0x36 << 1)  // 0x6C
 /* USER CODE END 0 */
 
 /**
@@ -119,38 +121,33 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 //	OLED_Init();
-//	/*ÏÔÊ¾Ê®Áù½øÖÆÊı×Ö0xA5A5£¬³¤¶ÈÎª4£¬×ÖÌå´óĞ¡Îª6*8µãÕó*/
+//	/*ï¿½ï¿½Ê¾Ê®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0xA5A5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡Îª6*8ï¿½ï¿½ï¿½ï¿½*/
 //	OLED_Printf(0, 0, OLED_8X16,"    FOC_TEST    ");
 //	OLED_Update();
-//	CAN_Loopback_Test_Init(); // ÉèÖÃ»Ø»·Ä£Ê½²¢Æô¶¯ CAN	
-	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 ¶¨Ê±Æ÷¸üĞÂÖĞ¶Ï
+//	CAN_Loopback_Test_Init(); // ï¿½ï¿½ï¿½Ã»Ø»ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ CAN	
+	HAL_TIM_Base_Start_IT(&htim1); 						// htim1 ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
 	rtt_printf("Hello, RTT!\r\n");
 	rtt_printf("----systerm start!\r\n");
 	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)dma_test_data, sizeof(dma_test_data));
-	BLDC_PWM_SetDuty(0, 0, 0); // ÈıÏàÕ¼¿Õ±ÈÊ¾Àı
-	BLDC_PWM_Start();     // Æô¶¯ PWM Êä³ö
+
 	uint32_t t1 = Get_Systerm_Us();
-    HAL_Delay(100);
+    HAL_Delay(50);
     uint32_t t2 = Get_Systerm_Us();
 
-    rtt_printf("Elapsed: %lu us\r\n", t2 - t1); // ´òÓ¡¾­¹ıÊ±¼ä
-	
-//	mpu6050_demo_run();
-  /* USER CODE END 2 */
+    rtt_printf("Elapsed: %lu us\r\n", t2 - t1); // ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	HAL_Delay(1000);
 
+//	HAL_Delay(1000);
+//	HAL_Delay(1000);
+	MyFOC_Test();
+//	mpu6050_demo_run();
+
+  /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	my_data_analysis();				//´®¿ÚÊı¾İ½âÎö
-	float current_angle = my_foc_get_electrical_angle();
-	float target_angle = my_foc_get_target_angle();
-	// ¼òµ¥ P ¿ØÖÆ qÖáµçÑ¹
-	float error = target_angle - current_angle;
-	float Uq = error * 5.0f;  // PÏµÊı 5.0f
-	Uq = CONSTRAIN(Uq, -6.0f, 6.0f);
-	my_foc_set_torque(Uq, current_angle);
-	HAL_Delay(1);  // ¿ØÖÆÑ­»· 1ms
+//     AS5600_Test(0);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -221,8 +218,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

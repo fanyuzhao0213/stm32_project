@@ -19,7 +19,9 @@
 #include "stdio.h"
 #include "math.h"
 #include "i2c.h"
+#include "usart.h"
 
+My_TestTydef M0_Motor_Param = {0};
 /* ======================= 静态变量 ======================= */
 
 /* 电源电压，用于计算PWM占空比 */
@@ -31,7 +33,7 @@ static float Ua = 0.0f, Ub = 0.0f, Uc = 0.0f; // 三相实际电压
 
 /* 电机参数 */
 static float zero_electric_angle = 0.0f; // 电机零点电角度
-static int PP = 1;                        // 极对数
+static int PP = 7;                        // 极对数
 static int DIR = 1;                       // 电机方向：1=正转，-1=反转
 
 /* PWM配置结构体 */
@@ -92,7 +94,7 @@ static void _set_pwm(float Ua_val, float Ub_val, float Uc_val) {
 void my_foc_init(MotorPWM_TypeDef *pwm_cfg, float supply_voltage, uint8_t encoder_index) {
     voltage_power_supply = supply_voltage;
     motor_pwm = *pwm_cfg;
-    as5600_id = encoder_index;
+//    as5600_id = encoder_index;
 
     rtt_printf("PWM init finish! Motor supply voltage: %.2f V\r\n", voltage_power_supply);
 }
@@ -206,6 +208,9 @@ float DFOC_M0_AnglePID(float error) {
 /* ======================= 电机闭环控制接口 ======================= */
 #define MIN_DT 0.001f   // 最小时间间隔 1 ms
 #define MAX_DT 0.05f    // 最大时间间隔 50 ms
+
+#define MAX_VEL 5.0f   // 最大5 rad/s
+#define MAX_TORQUE 6.0f
 /**
  * @brief 角度+速度双闭环控制
  * @param target 目标角度 (rad)
@@ -218,42 +223,43 @@ float DFOC_M0_AnglePID(float error) {
  */
 void DFOC_M0_SetVelocityAngle(float target) 
 {
-    // 静态变量记录上一次总角度和时间
     static float last_total_angle = 0;
-    static uint32_t last_timestamp = 0; // 单位：微秒
+    static uint32_t last_timestamp = 0;
 
-    // 获取当前累计角度
+    // 1. 获取当前累计角度
     float total_angle = AS5600_GetTotalAngle(as5600_id);
-    // 获取当前微秒时间
+
+    // 2. 获取时间
     uint32_t timestamp_now = Get_Systerm_Us();
-    // 计算时间间隔 dt，处理32位计数器溢出
-    uint32_t dt_us = (timestamp_now >= last_timestamp) ? 
-                     (timestamp_now - last_timestamp) : 
-                     (0xFFFF - last_timestamp + timestamp_now + 1);
-    float dt = dt_us * 1e-6f; // 转换为秒
-	if(dt < MIN_DT) dt = MIN_DT;		// 防止除零或时间过小
-	if(dt > MAX_DT) dt = MAX_DT;		// 防止时间过大
-	
-    // 计算瞬时速度（rad/s）
+    uint32_t dt_us = timestamp_now - last_timestamp;  // 32位自动溢出
+    float dt = dt_us * 1e-6f;
+    dt = CONSTRAIN(dt, MIN_DT, MAX_DT);
+
+    // 3. 计算速度（rad/s）
     float vel_measured = (total_angle - last_total_angle) / dt;
-    // 速度低通滤波，滤掉高频噪声
     vel_measured = LowPassFilter_Update(&M0_Vel_Flt, vel_measured);
 
-    // 角度PID计算目标速度
-	float current_angle = AS5600_GetTotalAngle(as5600_id); 		// rad, 累计旋转
-    float angle_error = target - current_angle;					//目标角度 减去 现在的角度		
+    // 4. 角度PID计算目标速度（单圈角度）
+    float current_angle = AS5600_GetAngle(as5600_id); // 0~2π
+    float angle_error = target - current_angle;
     float vel_target = DFOC_M0_AnglePID(angle_error);
+    vel_target = CONSTRAIN(vel_target, -MAX_VEL, MAX_VEL);
 
-    // 速度PID计算输出扭矩
-    float vel_error = vel_target - vel_measured;
+    // 5. 速度PID计算输出扭矩
+    float vel_error = vel_target - vel_measured;  // 注意减号
     float torque = DFOC_M0_VelPID(vel_error);
+    torque = CONSTRAIN(torque, -MAX_TORQUE, MAX_TORQUE);
 
-    // 输出FOC电压，控制电机
+    // 6. 输出FOC电压
     my_foc_set_torque(torque, my_foc_get_electrical_angle());
 
-    // 更新上一次角度和时间
+    // 7. 更新上一次角度和时间
     last_total_angle = total_angle;
     last_timestamp = timestamp_now;
+
+    // 8. 可选调试打印
+    rtt_printf("[PID] angle_err: %.3f rad | vel_meas: %.3f | vel_target: %.3f | torque: %.3f\r\n",
+               angle_error, vel_measured, vel_target, torque);
 }
 
 
@@ -263,29 +269,27 @@ void DFOC_M0_SetVelocityAngle(float target)
  */
 void DFOC_M0_SetVelocity(float target) 
 {
-    static float last_total_angle = 0;
-    static uint32_t last_timestamp = 0; // 上一次采样时间（微秒）
     static uint8_t first_flag = 1;      // 第一次调用标志
 
     // 获取当前总角度
-    float total_angle = AS5600_GetTotalAngle(as5600_id);
+	M0_Motor_Param.total_angle = AS5600_GetTotalAngle(as5600_id);
     // 获取当前微秒时间
-    uint32_t timestamp_now = Get_Systerm_Us();
+	M0_Motor_Param.timestamp_now = Get_Systerm_Us();
 
     // 第一次调用，初始化 last 值并返回，不计算速度
     if(first_flag) {
-        last_total_angle = total_angle;
-        last_timestamp = timestamp_now;
+        M0_Motor_Param.last_total_angle = M0_Motor_Param.total_angle;
+        M0_Motor_Param.last_timestamp = M0_Motor_Param.timestamp_now;
         first_flag = 0;
         return;
     }
 
     // 计算时间间隔 dt
     uint32_t dt_us;
-    if(timestamp_now >= last_timestamp) {
-        dt_us = timestamp_now - last_timestamp;
+    if(M0_Motor_Param.timestamp_now >= M0_Motor_Param.last_timestamp) {
+        dt_us = M0_Motor_Param.timestamp_now - M0_Motor_Param.last_timestamp;
     } else {
-        dt_us = (0xFFFF - last_timestamp) + timestamp_now + 1; // 16位计数器溢出
+        dt_us = (0xFFFF - M0_Motor_Param.last_timestamp) + M0_Motor_Param.timestamp_now + 1; // 16位计数器溢出
     }
 
     float dt = dt_us * 1e-6f; // 转换为秒
@@ -304,21 +308,24 @@ void DFOC_M0_SetVelocity(float target)
     }
 
     // 计算速度（rad/s）
-    float vel_measured = (total_angle - last_total_angle) / dt;
+    M0_Motor_Param.vel_measured = (M0_Motor_Param.total_angle - M0_Motor_Param.last_total_angle) / dt;
+//	rtt_printf("[FOC] IM0_Motor_Param.vel_measured = %f \r\n", M0_Motor_Param.vel_measured);
 
     // 速度低通滤波
-    vel_measured = LowPassFilter_Update(&M0_Vel_Flt, vel_measured);
+    M0_Motor_Param.vel_measured = LowPassFilter_Update(&M0_Vel_Flt, M0_Motor_Param.vel_measured);
 
+	char my_data[6];
     // PID计算
-    float vel_error = target - vel_measured;
+    float vel_error = target + M0_Motor_Param.vel_measured;
     float torque = DFOC_M0_VelPID(vel_error);
-
+//	rtt_printf("[FOC] vel_error = %.2f V\r\n", vel_error);
+//	rtt_printf("[FOC] torque = %.2f V\r\n", torque);
     // 输出FOC电压
     my_foc_set_torque(torque, my_foc_get_electrical_angle());
 
     // 更新上次值
-    last_total_angle = total_angle;
-    last_timestamp = timestamp_now;
+    M0_Motor_Param.last_total_angle = M0_Motor_Param.total_angle;
+	M0_Motor_Param.last_timestamp = M0_Motor_Param.timestamp_now;
 }
 
 /**
@@ -361,6 +368,9 @@ void foc_pwm_config(void)
     motor_pwm.channelA = PWM_CHANNEL_A;
     motor_pwm.channelB = PWM_CHANNEL_B;
     motor_pwm.channelC = PWM_CHANNEL_C;
+	
+	BLDC_PWM_SetDuty(0, 0, 0); 
+//	BLDC_PWM_Start();
 }
 
 /* ======================= 电机目标角度接口 ======================= */
@@ -388,7 +398,28 @@ float my_foc_get_target_angle(void) {
 
 #define MOTOR_PP        7      // 电机极对数，根据实际电机填写
 #define MOTOR_DIR       1      // 电机方向 1=正转 -1=反转
+void Test_VelocityCalc(void)
+{
+    static uint32_t last_timestamp = 0;
+    static float last_angle = 0;
 
+    float angle = AS5600_GetTotalAngle(as5600_id);
+    uint32_t now_timestamp = Get_Systerm_Us();
+
+    uint32_t dt_us = (now_timestamp >= last_timestamp) ?
+                      (now_timestamp - last_timestamp) :
+                      (0xFFFF - last_timestamp + now_timestamp + 1);
+
+    float dt = dt_us * 1e-6f; // 转换为秒
+    float vel = (angle - last_angle) / dt; // rad/s
+
+    rtt_printf("[VEL] dt=%.6f s, angle=%.4f rad, vel=%.4f rad/s\n", dt, angle, vel);
+
+    last_timestamp = now_timestamp;
+    last_angle = angle;
+
+    HAL_Delay(10); // 10ms打印一次
+}
 void MyFOC_Test(void)
 {
     /* ========== 1. 初始化硬件 ========== */
@@ -418,6 +449,10 @@ void MyFOC_Test(void)
     rtt_printf("[FOC Test] Open-loop done!\r\n");
 
     HAL_Delay(1000);
+//	while(1)
+//	{
+//		Test_VelocityCalc();
+//	}
 
     /* ========== 4. 速度闭环测试 ========== */
 	/*
@@ -431,7 +466,7 @@ void MyFOC_Test(void)
 	*/
     rtt_printf("[FOC Test] Velocity loop test!\r\n");
     DFOC_M0_SetVelPID(2.0f, 0.2f, 0.0f, 10000.0f);  // 设置速度PID参数
-    float vel_target = 5.0f; // 目标速度 rad/s
+    float vel_target = 1.0f; // 目标速度 rad/s
     uint32_t start_tick = HAL_GetTick();
     while(HAL_GetTick() - start_tick < 5000)  // 运行5秒
     {
@@ -442,7 +477,7 @@ void MyFOC_Test(void)
     rtt_printf("[FOC Test] Velocity loop done!\r\n");
     HAL_Delay(1000);
 
-	
+	#if 0
     /* ========== 5. 角度+速度双闭环测试 ========== */
     rtt_printf("[FOC Test] Position+Velocity loop test!\r\n");
 	/* 
@@ -468,7 +503,7 @@ void MyFOC_Test(void)
     {
         rtt_printf("[FOC Test] Move to %.2f rad\r\n", target_angles[i]);
         uint32_t move_start = HAL_GetTick();
-        while(HAL_GetTick() - move_start < 3000)  // 每个位置保持3秒
+        while(HAL_GetTick() - move_start < 1000)  // 每个位置保持3秒
         {
             DFOC_M0_SetVelocityAngle(target_angles[i]);
             // 打印当前角度
@@ -481,6 +516,35 @@ void MyFOC_Test(void)
     rtt_printf("[FOC Test] Position+Velocity loop done!\r\n");
 
     rtt_printf("==== FOC Test Complete ====\r\n");
+	#endif
 }
 
 
+//// 电机极对数，例如 7 对极
+//#define POLE_PAIRS 7  
+//// 控制周期 1ms
+//#define CONTROL_DT 0.01f    
+
+//float virtual_electrical_angle = 0.0f;  // 虚拟电角度
+//float open_loop_speed = 10.0f;          // 设定速度 (电角速度 rad/s)
+
+//void my_foc_init_test(void)
+//{
+//	AS5600_InitDevice(&hi2c2, (0x36 << 1), 0);	    // 初始化AS5600编码器
+//	foc_pwm_config();    							// 初始化PWM配置
+//    my_foc_init(&motor_pwm, MOTOR_VOLTAGE, 0);    	// 初始化FOC模块
+//}
+//// 开环FOC控制函数
+//void DFOC_M0_OpenLoop(float torque)
+//{
+
+//    // 1. 计算电角度累加
+//    virtual_electrical_angle += open_loop_speed * CONTROL_DT;
+
+//    // 保持角度在 0~2π 之间
+//    if(virtual_electrical_angle > 2 * M_PI)
+//        virtual_electrical_angle -= 2*M_PI;
+
+//    // 2. 调用FOC的设置转矩接口
+//    my_foc_set_torque(torque, virtual_electrical_angle);
+//}

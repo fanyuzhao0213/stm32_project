@@ -266,15 +266,15 @@ void TIM3_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-    uint32_t isrflags = READ_REG(huart1.Instance->SR);  // ¶ÁÈ¡×´Ì¬¼Ä´æÆ÷
-    uint32_t cr1its   = READ_REG(huart1.Instance->CR1); // ¶ÁÈ¡¿ØÖÆ¼Ä´æÆ÷
+    uint32_t isrflags = READ_REG(huart1.Instance->SR);  // ï¿½ï¿½È¡×´Ì¬ï¿½Ä´ï¿½ï¿½ï¿½
+    uint32_t cr1its   = READ_REG(huart1.Instance->CR1); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
 
-	/*USART_CR1_IDLEIE CR1¼Ä´æÆ÷ÖĞµÄIDLEÖĞ¶ÏÊ¹ÄÜÎ»£¬ÓÃ»§Èí¼şÊÇ·ñÔÊĞíÏìÓ¦¿ÕÏĞÖĞ¶Ï¡£*/
-    /* ÅĞ¶ÏÊÇ·ñ²úÉúÁËIDLEÖĞ¶Ï */
+	/*USART_CR1_IDLEIE CR1ï¿½Ä´ï¿½ï¿½ï¿½ï¿½Ğµï¿½IDLEï¿½Ğ¶ï¿½Ê¹ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶Ï¡ï¿½*/
+    /* ï¿½Ğ¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IDLEï¿½Ğ¶ï¿½ */
     if(((isrflags & USART_SR_IDLE) != RESET) && ((cr1its & USART_CR1_IDLEIE) != RESET))
     {
-        __HAL_UART_CLEAR_IDLEFLAG(&huart1);  // Çå³ıIDLE±êÖ¾Î»
-        HAL_UART_IDLECallback(&huart1);      // µ÷ÓÃ×Ô¶¨Òå»Øµ÷º¯Êı
+        __HAL_UART_CLEAR_IDLEFLAG(&huart1);  // ï¿½ï¿½ï¿½IDLEï¿½ï¿½Ö¾Î»
+        HAL_UART_IDLECallback(&huart1);      // ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
   /* USER CODE END USART1_IRQn 0 */
@@ -325,25 +325,39 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* tim_baseHandle)
 	}
 }
 
-/*´®¿Ú¿ÕÏĞÖĞ¶Ï´¥·¢*/
+/* UART ç©ºé—²ä¸­æ–­å›è°ƒ */
 void HAL_UART_IDLECallback(UART_HandleTypeDef *huart)
 {
-    if(huart->Instance == USART1)
+    if (huart->Instance == USART1)
     {
-        // Í£Ö¹DMA
+        /* åœæ­¢ DMA æ¥æ”¶ï¼Œé˜²æ­¢æ•°æ®æ›´æ–° */
         HAL_UART_DMAStop(&huart1);
 
-        // ¼ÆËã½ÓÊÕ³¤¶È
+        /* è®¡ç®—æœ‰æ•ˆæ•°æ®é•¿åº¦ */
         uart_rx_len = UART_DMA_RX_BUF_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
 
-        if(uart_rx_len > 0)
+        /* åŠ å…¥æ—¥å¿—è¾“å‡ºï¼Œè°ƒè¯•å®é™…æ¥æ”¶åˆ°çš„æ•°æ®é•¿åº¦ */
+        rtt_printf("[UART] Idle interrupt, received length: %d\r\n", uart_rx_len);
+
+        if (uart_rx_len > 0)
         {
+            /* æ‹·è´æ¥æ”¶åˆ°çš„æ•°æ®åˆ°å¸§ç¼“å†² */
             memcpy(uart_frame_buf, uart_dma_rx_buf, uart_rx_len);
-            uart_frame_flag = 1; // ±ê¼ÇÒ»Ö¡Êı¾İ½ÓÊÕÍê³É
+
+            /* æ‰“å°å‰å‡ ä¸ªå­—èŠ‚å†…å®¹ï¼Œæ–¹ä¾¿æ£€æŸ¥ä¹±ç  */
+            rtt_printf("[UART] Data HEX: ");
+            for (uint16_t i = 0; i < uart_rx_len; i++)
+            {
+                rtt_printf("%02X ", uart_frame_buf[i]);
+            }
+            rtt_printf("\r\n");
+
+            uart_frame_flag = 1; 
         }
 
-        // ÖØĞÂÆô¶¯DMA½ÓÊÕ
+        /* é‡æ–°å¯åŠ¨ DMA æ¥æ”¶ */
         HAL_UART_Receive_DMA(&huart1, uart_dma_rx_buf, UART_DMA_RX_BUF_SIZE);
     }
 }
+
 /* USER CODE END 1 */

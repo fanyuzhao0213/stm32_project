@@ -5,12 +5,12 @@ f407vet6_hal_can\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
 f407vet6_hal_can\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
-f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Include/core_cm4.h
+f407vet6_hal_can\oled.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h
 f407vet6_hal_can\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Include/cmsis_version.h
-f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
-f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
-f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+f407vet6_hal_can\oled.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h
+f407vet6_hal_can\oled.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
+f407vet6_hal_can\oled.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
+f407vet6_hal_can\oled.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\mpu_armv7.h
 f407vet6_hal_can\oled.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 f407vet6_hal_can\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 f407vet6_hal_can\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
@@ -51,3 +51,4 @@ f407vet6_hal_can\oled.o: ../Core/Inc/main.h
 f407vet6_hal_can\oled.o: ../Core/Inc/can.h
 f407vet6_hal_can\oled.o: ../HardWare/MPU6050/atk_ms6050.h
 f407vet6_hal_can\oled.o: ../HardWare/FOC/my_foc.h
+f407vet6_hal_can\oled.o: ../HardWare/FOC/as5600.h

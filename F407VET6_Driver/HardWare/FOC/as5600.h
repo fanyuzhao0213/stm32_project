@@ -10,6 +10,10 @@
 #define AS5600_RAW_ANGLE_H     0x0C         // 高位寄存器
 
 
+//对于 12 位编码器，满量程是 4096。通常选择满量程的一半稍微再留一点裕度，比如：
+#define CROSS_THRESHOLD 3072  // 4096 * 0.75
+
+
 /**
  * @brief 初始化AS5600编码器设备
  * @param hi2c I2C句柄

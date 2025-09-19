@@ -21,12 +21,12 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-// DMA½ÓÊÕ»º³åÇø
+// DMAï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½
 uint8_t uart_dma_rx_buf[UART_DMA_RX_BUF_SIZE] = {0};
-// Êµ¼Ê½ÓÊÕÊý¾Ý»º´æ£¨·ÀÖ¹Êý¾Ý¸²¸Ç£©
+// Êµï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý»ï¿½ï¿½æ£¨ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½Ç£ï¿½
 uint8_t uart_frame_buf[UART_DMA_RX_BUF_SIZE] = {0};
-uint16_t uart_rx_len = 0;    // Êµ¼Ê½ÓÊÕµ½µÄÊý¾Ý³¤¶È
-uint8_t uart_frame_flag = 0; // Ò»Ö¡½ÓÊÕÍê³É±êÖ¾
+uint16_t uart_rx_len = 0;    // Êµï¿½Ê½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
+uint8_t uart_frame_flag = 0; // Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½Ö¾
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -58,9 +58,9 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-	// Ê¹ÄÜ¿ÕÏÐÖÐ¶Ï
+	// Ê¹ï¿½Ü¿ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-    // Æô¶¯DMA½ÓÊÕ
+    // ï¿½ï¿½ï¿½ï¿½DMAï¿½ï¿½ï¿½ï¿½
     HAL_UART_Receive_DMA(&huart1, uart_dma_rx_buf, UART_DMA_RX_BUF_SIZE);
   /* USER CODE END USART1_Init 2 */
 
@@ -168,27 +168,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 /* USER CODE BEGIN 1 */
 void my_data_analysis(void)
 {
-	/* ÅÐ¶ÏÊÇ·ñ½ÓÊÕµ½Ò»Ö¡ÍêÕûÊý¾Ý */
+	/* ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Õµï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	if(uart_frame_flag)
 	{
-		uart_frame_flag = 0;  // Çå³ý±êÖ¾Î»
+		uart_frame_flag = 0;  // ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
 
-		/* ´òÓ¡½ÓÊÕµ½µÄÊý¾Ý */
+		/* ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		rtt_printf("Recv [%d]: ", uart_rx_len);
 		for(int i = 0; i < uart_rx_len; i++)
 		{
-			rtt_printf("%02X ", uart_frame_buf[i]); // ÒÔ16½øÖÆ¸ñÊ½´òÓ¡
+			rtt_printf("%02X ", uart_frame_buf[i]); // ï¿½ï¿½16ï¿½ï¿½ï¿½Æ¸ï¿½Ê½ï¿½ï¿½Ó¡
 		}
 		rtt_printf("\r\n");
 
-		/* TODO: ÔÚ´Ë´¦Ìí¼ÓÊý¾Ý½âÎö´¦ÀíÂß¼­ */
-		/* ½«½ÓÊÕµ½µÄÊý¾Ý°´×Ö·û´®´¦ÀíÎªÄ¿±ê½Ç¶È */
+		/* TODO: ï¿½Ú´Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ */
+		/* ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý°ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÄ¿ï¿½ï¿½Ç¶ï¿½ */
         char temp_str[32] = {0};
         if(uart_rx_len < sizeof(temp_str)) {
             memcpy(temp_str, uart_frame_buf, uart_rx_len);
-            temp_str[uart_rx_len] = '\0';  // È·±£×Ö·û´®½áÊø·û
+            temp_str[uart_rx_len] = '\0';  // È·ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-            /* ×ª¸¡µãÊý×÷Îªµç»úÄ¿±ê½Ç¶È */
+            /* ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ç¶ï¿½ */
             motor_target_angle = atof(temp_str);
             rtt_printf("[FOC] Set target angle: %.2f\r\n", motor_target_angle);
         } else {
@@ -196,4 +196,32 @@ void my_data_analysis(void)
         }
 	}
 }
+
+
+/**
+ * @brief ä¸²å£1 DMA å‘é€å‡½æ•°
+ * @param data   å¾…å‘é€çš„æ•°æ®æŒ‡é’ˆ
+ * @param length æ•°æ®é•¿åº¦ï¼ˆå­—èŠ‚ï¼‰
+ * @return HAL_StatusTypeDef
+ *         - HAL_OK     : å‘é€å¯åŠ¨æˆåŠŸ
+ *         - HAL_BUSY   : DMA æ­£åœ¨å¿™ï¼Œå‘é€æœªå¯åŠ¨
+ *         - HAL_ERROR  : å‚æ•°é”™è¯¯
+ */
+HAL_StatusTypeDef UART1_Send_DMA(uint8_t *data, uint16_t length)
+{
+    if (data == NULL || length == 0)
+    {
+        return HAL_ERROR;  // å‚æ•°é”™è¯¯
+    }
+
+    // æ£€æŸ¥ DMA æ˜¯å¦ç©ºé—²
+    if (huart1.gState != HAL_UART_STATE_READY)
+    {
+        return HAL_BUSY;   // ä¸Šä¸€æ¬¡å‘é€è¿˜æœªå®Œæˆ
+    }
+
+    // å¯åŠ¨DMAå‘é€
+    return HAL_UART_Transmit_DMA(&huart1, data, length);
+}
+
 /* USER CODE END 1 */

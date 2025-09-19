@@ -167,7 +167,7 @@ void MX_TIM3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM3_Init 2 */
-HAL_TIM_Base_Start(&htim3); // Æô¶¯¼ÆÊýÆ÷
+HAL_TIM_Base_Start(&htim3); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   /* USER CODE END TIM3_Init 2 */
 
 }
@@ -292,13 +292,13 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 }
 
 /* USER CODE BEGIN 1 */
-/*======================= ÉèÖÃÕ¼¿Õ±È =======================*/
+/*======================= ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Õ±ï¿½ =======================*/
 /**
- * @brief  ÉèÖÃ U/V/W ÈýÂ· PWM Õ¼¿Õ±È
- * @param  duty_u: U ÏàÕ¼¿Õ±È (0-100)
- * @param  duty_v: V ÏàÕ¼¿Õ±È (0-100)
- * @param  duty_w: W ÏàÕ¼¿Õ±È (0-100)
- * @note   Õ¼¿Õ±È = CCR / ARR
+ * @brief  ï¿½ï¿½ï¿½ï¿½ U/V/W ï¿½ï¿½Â· PWM Õ¼ï¿½Õ±ï¿½
+ * @param  duty_u: U ï¿½ï¿½Õ¼ï¿½Õ±ï¿½ (0-100)
+ * @param  duty_v: V ï¿½ï¿½Õ¼ï¿½Õ±ï¿½ (0-100)
+ * @param  duty_w: W ï¿½ï¿½Õ¼ï¿½Õ±ï¿½ (0-100)
+ * @note   Õ¼ï¿½Õ±ï¿½ = CCR / ARR
  */
 void BLDC_PWM_SetDuty(uint8_t duty_u, uint8_t duty_v, uint8_t duty_w)
 {
@@ -306,14 +306,14 @@ void BLDC_PWM_SetDuty(uint8_t duty_u, uint8_t duty_v, uint8_t duty_w)
     if (duty_v > 100) duty_v = 100;
     if (duty_w > 100) duty_w = 100;
 
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty_u); // ÉèÖÃ U Ïà
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, duty_v); // ÉèÖÃ V Ïà
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, duty_w); // ÉèÖÃ W Ïà
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty_u); // ï¿½ï¿½ï¿½ï¿½ U ï¿½ï¿½
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, duty_v); // ï¿½ï¿½ï¿½ï¿½ V ï¿½ï¿½
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, duty_w); // ï¿½ï¿½ï¿½ï¿½ W ï¿½ï¿½
 }
 
-/*======================= Í£Ö¹Êä³ö =======================*/
+/*======================= Í£Ö¹ï¿½ï¿½ï¿½ =======================*/
 /**
- * @brief Í£Ö¹ËùÓÐ PWM Êä³ö
+ * @brief Í£Ö¹ï¿½ï¿½ï¿½ï¿½ PWM ï¿½ï¿½ï¿½
  */
 void BLDC_PWM_Stop(void)
 {
@@ -321,23 +321,23 @@ void BLDC_PWM_Stop(void)
     HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
     HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_4);
 }
-/*======================= Æô¶¯ PWM Êä³ö =======================*/
+/*======================= ï¿½ï¿½ï¿½ï¿½ PWM ï¿½ï¿½ï¿½ =======================*/
 /**
- * @brief  Æô¶¯ TIM2 µÄ CH2¡¢CH3¡¢CH4 PWM Êä³ö
+ * @brief  ï¿½ï¿½ï¿½ï¿½ TIM2 ï¿½ï¿½ CH2ï¿½ï¿½CH3ï¿½ï¿½CH4 PWM ï¿½ï¿½ï¿½
  */
 void BLDC_PWM_Start(void)
 {
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // U Ïà
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); // V Ïà
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4); // W Ïà
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // U ï¿½ï¿½
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); // V ï¿½ï¿½
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4); // W ï¿½ï¿½
 }
 
 /**
- * @brief »ñÈ¡ TIM3 µ±Ç°¼ÆÊýÖµ£¨Î¢Ãë£©
- * @return µ±Ç°¼ÆÊýÖµ£¬µ¥Î»£ºÎ¢Ãë
+ * @brief ï¿½ï¿½È¡ TIM3 ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Î¢ï¿½ë£©
+ * @return ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Î¢ï¿½ï¿½
  * 
- * ËµÃ÷£º
- * Ö±½Ó¶ÁÈ¡ CNT ¼´¿É£¬½áºÏ PSC=83£¬µ¥Î»¾ÍÊÇÎ¢Ãë
+ * Ëµï¿½ï¿½ï¿½ï¿½
+ * Ö±ï¿½Ó¶ï¿½È¡ CNT ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ PSC=83ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Î¢ï¿½ï¿½
  */
 uint32_t Get_Systerm_Us(void)
 {

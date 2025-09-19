@@ -35,15 +35,15 @@ extern "C" {
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
-#define UART_DMA_RX_BUF_SIZE   256   // DMA»º³åÇø´óÐ¡
+#define UART_DMA_RX_BUF_SIZE   256   // DMAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
 
 
-// DMA½ÓÊÕ»º³åÇø
+// DMAï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½
 extern uint8_t uart_dma_rx_buf[UART_DMA_RX_BUF_SIZE];
-// Êµ¼Ê½ÓÊÕÊý¾Ý»º´æ£¨·ÀÖ¹Êý¾Ý¸²¸Ç£©
+// Êµï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý»ï¿½ï¿½æ£¨ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½Ç£ï¿½
 extern uint8_t uart_frame_buf[UART_DMA_RX_BUF_SIZE];
-extern uint16_t uart_rx_len;    // Êµ¼Ê½ÓÊÕµ½µÄÊý¾Ý³¤¶È
-extern uint8_t uart_frame_flag; // Ò»Ö¡½ÓÊÕÍê³É±êÖ¾
+extern uint16_t uart_rx_len;    // Êµï¿½Ê½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
+extern uint8_t uart_frame_flag; // Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½Ö¾
 
 /* USER CODE END Private defines */
 
@@ -51,6 +51,7 @@ void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void my_data_analysis(void);
+HAL_StatusTypeDef UART1_Send_DMA(uint8_t *data, uint16_t length);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

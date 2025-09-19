@@ -120,9 +120,9 @@ float AS5600_GetTotalAngle(uint8_t index) {
     int16_t delta = raw - dev->last_raw;
 
     // 处理跨圈：AS5600范围0-4095，当从4095跳回0或从0跳到4095时
-    if(delta > 2048) {
+    if(delta > CROSS_THRESHOLD) {
         dev->turns--;  // 逆时针跨圈
-    } else if(delta < -2048) {
+    } else if(delta < -CROSS_THRESHOLD) {
         dev->turns++;  // 顺时针跨圈
     }
 

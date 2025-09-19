@@ -16,12 +16,23 @@
 #define VELOCITY_LPF_COEF  		0.01f   			// 速度低通滤波系数
 
 #define	CONSTRAIN(val, low, high)  ((val) < (low) ? (low) : ((val) > (high) ? (high) : (val)))
-#define	MOTOR_VOLTAGE			12.6f
+#define	MOTOR_VOLTAGE			12.0f
 #define PWM_TIM            		&htim2     				// PWM使用的定时器
 #define PWM_CHANNEL_A      		TIM_CHANNEL_2
 #define PWM_CHANNEL_B      		TIM_CHANNEL_3
 #define PWM_CHANNEL_C      		TIM_CHANNEL_4
 
+typedef struct {
+    float last_total_angle;
+    uint32_t last_timestamp;
+    float total_angle;
+    uint32_t timestamp_now;
+    uint32_t dt_us;
+    float dt;
+	float vel_measured;
+} My_TestTydef;
+
+extern My_TestTydef M0_Motor_Param;
 
 /* ======================= PWM 配置结构体 ======================= */
 typedef struct {
@@ -85,5 +96,7 @@ void my_foc_align_sensor(int pole_pairs, int dir);
 /* 模块循环相关：速度估计器（若外部在定时器中周期调用，可降低噪声） */
 void my_foc_update_velocity_estimator(void); // 更新内部速度估计（按需调用）
 
-
+void MyFOC_Test(void);
+void my_foc_init_test(void);
+void DFOC_M0_OpenLoop(float torque);
 #endif /* MY_FOC_H */

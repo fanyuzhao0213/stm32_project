@@ -12,11 +12,11 @@ f407vet6_hal_can\inv_mpu.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rc
 f407vet6_hal_can\inv_mpu.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
-f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Include/core_cm4.h
-f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Include/cmsis_version.h
-f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
-f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
-f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+f407vet6_hal_can\inv_mpu.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h
+f407vet6_hal_can\inv_mpu.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h
+f407vet6_hal_can\inv_mpu.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
+f407vet6_hal_can\inv_mpu.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
+f407vet6_hal_can\inv_mpu.o: D:\Users\Administrator\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\mpu_armv7.h
 f407vet6_hal_can\inv_mpu.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 f407vet6_hal_can\inv_mpu.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 f407vet6_hal_can\inv_mpu.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
@@ -51,4 +51,5 @@ f407vet6_hal_can\inv_mpu.o: ../Core/Inc/main.h
 f407vet6_hal_can\inv_mpu.o: ../Core/Inc/can.h
 f407vet6_hal_can\inv_mpu.o: ../HardWare/MPU6050/atk_ms6050.h
 f407vet6_hal_can\inv_mpu.o: ../HardWare/FOC/my_foc.h
+f407vet6_hal_can\inv_mpu.o: ../HardWare/FOC/as5600.h
 f407vet6_hal_can\inv_mpu.o: ..\HardWare\MPU6050\DMP\inv_mpu_dmp_motion_driver.h

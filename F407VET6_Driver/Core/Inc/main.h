@@ -40,6 +40,7 @@ extern "C" {
 #include "my_can.h"
 #include "atk_ms6050.h"
 #include "my_foc.h"
+#include "as5600.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
